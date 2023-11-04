@@ -1,0 +1,23 @@
+[{
+  "_id": {
+    "$oid": "65465f231b0d553e2103c6e2"
+  },
+  "username": "ayesnehil",
+  "password": "1234s",
+  "projects": [
+    {
+      "$oid": "65465f231b0d553e2103c6e5"
+    },
+    {
+      "$oid": "65467c498050d65dae59a115"
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "65467d718050d65dae59a11d"
+  },
+  "username": "John_doe",
+  "password": "abcd"
+}]
