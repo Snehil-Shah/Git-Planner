@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
@@ -5,7 +6,6 @@ import { styled } from '@mui/material/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -16,40 +16,29 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function BasicStack() {
+async function getTasks(projectId) {
+  const response = await fetch(`http://localhost:3000/tasks?id=${projectId}`);
+  const projectDetails = await response.json();
+  return projectDetails;
+}
+
+export default function TaskList({ projectId }) {
+  const [taskList, setTasks] = React.useState([null]);
+  React.useEffect(() => {getTasks(projectId).then((projectDetails) => setTasks(projectDetails))},[projectId]);
+  let htmlList = taskList.map((tasks, index) => (<Item key={index}>
+                              <ListItem disablePadding>
+                                <ListItemButton>
+                                  <ListItemText primary={tasks} />
+                                </ListItemButton>
+                              </ListItem>
+                            </Item>))
   return (
     <Box sx={{ width: '100%' }}>
-    <List>
-      <Stack spacing={2}>
-        <Item>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItemButton>
-          </ListItem>
-        </Item>
-        <Item>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItemButton>
-          </ListItem>
-        </Item>
-        <Item>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItemButton>
-          </ListItem>
-        </Item>
-      </Stack>
-    </List>
+      <List>
+        <Stack spacing={2}>
+          {htmlList}
+        </Stack>
+      </List>
     </Box>
   );
 }

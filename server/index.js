@@ -2,6 +2,7 @@
 // TODO: learn middlewares and how colt steele added middlewares in route handlers
 
 const express = require('express')
+const cors = require('cors')
 const mongoose = require('mongoose')
 const Todo = require('./models/todo');
 const User = require('./models/user');
@@ -13,6 +14,7 @@ const taskRoutes = require('./routes/tasks')
 const app = express();
 mongoose.connect('mongodb://127.0.0.1:27017/ProjectSync');
 
+app.use(cors());
 app.use('/project',projectRoutes)
 app.use('/tasks',taskRoutes)
 

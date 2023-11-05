@@ -14,10 +14,10 @@ import { drawerWidth, Main, AppBar, DrawerHeader } from '../../utils/Navbar';
 import Tasklist from '../Taskview/TaskList';
 import ProjectList from './Projectlist';
 
-export default function PersistentDrawerLeft() {
+export default function Navbar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [credentials, LoadData] = React.useState(0)
+  const [credentials, LoadData] = React.useState('65465f231b0d553e2103c6e5')
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -66,11 +66,11 @@ export default function PersistentDrawerLeft() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <ProjectList account={LoadData}/>
+        <ProjectList setCredentials={LoadData}/>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Tasklist />
+        <Tasklist projectId = {credentials}/>
       </Main>
     </Box>
   );

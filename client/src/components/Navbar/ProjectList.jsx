@@ -1,13 +1,14 @@
 import * as React from 'react';
-import Divider from '@mui/material/Divider';
+// import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-export default function ProjectList({ account }) {
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-    React.useEffect(()=>account(selectedIndex),[selectedIndex, account])
+export default function ProjectList({ setCredentials }) {
+    const [selectedIndex, setSelectedIndex] = React.useState('65465f231b0d553e2103c6e5');
+    React.useEffect(()=>{
+        setCredentials(selectedIndex);
+    },[selectedIndex, setCredentials])
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     };
@@ -15,24 +16,19 @@ export default function ProjectList({ account }) {
         <>
             <List component="nav" aria-label="main mailbox folders">
                 <ListItemButton
-                    selected={selectedIndex === 0}
-                    onClick={(event) => handleListItemClick(event, 0)}
+                    selected={selectedIndex === '65465f231b0d553e2103c6e5'}
+                    onClick={(event) => handleListItemClick(event, '65465f231b0d553e2103c6e5')}
                 >
-                    <ListItemIcon>
-
-                    </ListItemIcon>
-                    <ListItemText primary="Inbox" />
+                    <ListItemText primary="Fitfolio" />
                 </ListItemButton>
                 <ListItemButton
-                    selected={selectedIndex === 1}
-                    onClick={(event) => handleListItemClick(event, 1)}
+                    selected={selectedIndex === '65467c498050d65dae59a115'}
+                    onClick={(event) => handleListItemClick(event, '65467c498050d65dae59a115')}
                 >
-                    <ListItemIcon>
-                    </ListItemIcon>
-                    <ListItemText primary="Drafts" />
+                    <ListItemText primary="Movie-System" />
                 </ListItemButton>
             </List>
-            <Divider />
+            {/* <Divider />
             <List component="nav" aria-label="secondary mailbox folder">
                 <ListItemButton
                     selected={selectedIndex === 2}
@@ -46,7 +42,7 @@ export default function ProjectList({ account }) {
                 >
                     <ListItemText primary="Spam" />
                 </ListItemButton>
-            </List>
+            </List> */}
         </>
     );
 }
