@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const Todo = require('./models/todo');
 const User = require('./models/user');
 const Project = require('./models/project');
+const morgan = require('morgan')
 
 const projectRoutes = require('./routes/projects')
 const taskRoutes = require('./routes/tasks')
@@ -15,6 +16,7 @@ const app = express();
 mongoose.connect('mongodb://127.0.0.1:27017/ProjectSync');
 
 app.use(cors());
+app.use(morgan('dev'));
 app.use('/project',projectRoutes)
 app.use('/tasks',taskRoutes)
 

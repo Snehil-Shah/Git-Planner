@@ -25,6 +25,7 @@ async function getTasks(projectId) {
 export default function TaskList({ projectId }) {
   const [taskList, setTasks] = React.useState([null]);
   React.useEffect(() => {getTasks(projectId).then((projectDetails) => setTasks(projectDetails))},[projectId]);
+  // HACK: Make this a seperate item component and organize them in some folder like utils or smth
   let htmlList = taskList.map((tasks, index) => (<Item key={index}>
                               <ListItem disablePadding>
                                 <ListItemButton>
