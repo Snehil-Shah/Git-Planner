@@ -1,6 +1,8 @@
 // HACK: write a catchAsync function
 // TODO: learn middlewares and how colt steele added middlewares in route handlers
 
+// FIXME: find out about do we serve files over our express server, or the vite server somehow runs during production too. if the express way, how does that affect API interactions, is there an internal template-y server-y way to serve public REACT assets
+
 const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
