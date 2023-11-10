@@ -13,5 +13,11 @@ const projectSchema = new mongoose.Schema({
     }, {timestamps: true}
 )
 
+projectSchema.pre('findOneAndDelete', async function(next) {
+    const project = await this.model.findOne(this.getFilter());
+    await Todo.deleteMany({_id: { $in: project.todoList}});
+    next()
+})
+
 module.exports = mongoose.model('Project', projectSchema);
 
