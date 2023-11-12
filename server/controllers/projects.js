@@ -8,13 +8,14 @@ module.exports.getProjects = async (_req, res) => {
 module.exports.getTaskList = async(req,res) => {
     const {projectId} = req.params;
     const project = await Project.findById(projectId).populate('todoList');
-    res.send(project.todoList.map((task) => (task['task'])));
+    res.send(project.todoList);
 }
 
 module.exports.createProject = async(req,res) => {
     try {
         const {projectName} = req.body;
-        await Project.create({name: projectName});
+        const newProject = await Project.create({name: projectName});
+        res.status(201).send(newProject);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

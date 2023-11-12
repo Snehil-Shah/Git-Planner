@@ -12,10 +12,14 @@ const projectRoutes = require('./routes/projects')
 const taskRoutes = require('./routes/tasks')
 
 const app = express();
+app.use(cors());
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  });
 mongoose.connect('mongodb://127.0.0.1:27017/ProjectSync');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
 app.use(morgan('dev'));
 
 

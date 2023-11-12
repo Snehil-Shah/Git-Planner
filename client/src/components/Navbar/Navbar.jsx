@@ -12,12 +12,14 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { drawerWidth, Main, AppBar, DrawerHeader } from '../../utils/Navbar';
 import Tasklist from '../Taskview/TaskList';
-import ProjectList from './Projectlist';
+import ProjectList from './ProjectList';
 
 export default function Navbar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [credentials, LoadData] = React.useState('65465f231b0d553e2103c6e5')
+  const [credentials, LoadData] = React.useState('0')
+
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -66,11 +68,11 @@ export default function Navbar() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <ProjectList setCredentials={LoadData}/>
+        <ProjectList setCredentials={LoadData} />
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Tasklist projectId = {credentials}/>
+        <Tasklist projectId={credentials} />
       </Main>
     </Box>
   );

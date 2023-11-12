@@ -3,46 +3,38 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import CreateProjectForm from './createProjectForm'
+import { getProjects } from '../../services/projects';
 
 export default function ProjectList({ setCredentials }) {
-    const [selectedIndex, setSelectedIndex] = React.useState('65465f231b0d553e2103c6e5');
-    React.useEffect(()=>{
+    const [selectedIndex, setSelectedIndex] = React.useState('0');
+    const [projectList, setProjects] = React.useState([{id: null, projectName: null}]);
+    React.useEffect(() => {
         setCredentials(selectedIndex);
-    },[selectedIndex, setCredentials])
+    }, [selectedIndex, setCredentials])
+    React.useEffect(() => {
+        getProjects().then((projects) => setProjects(projects))
+    }, [])
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     };
+
+    let htmlList = projectList.map((project, index) => (
+        <ListItemButton
+            key={index}
+            selected={selectedIndex == project.id}
+            onClick={(event) => handleListItemClick(event, project.id)}
+        >
+            <ListItemText primary={project.projectName} />
+        </ListItemButton>
+    ))
+
     return (
         <>
+            <CreateProjectForm refreshProjectList={setProjects}/>
             <List component="nav" aria-label="main mailbox folders">
-                <ListItemButton
-                    selected={selectedIndex === '65465f231b0d553e2103c6e5'}
-                    onClick={(event) => handleListItemClick(event, '65465f231b0d553e2103c6e5')}
-                >
-                    <ListItemText primary="Fitfolio" />
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === '65467c498050d65dae59a115'}
-                    onClick={(event) => handleListItemClick(event, '65467c498050d65dae59a115')}
-                >
-                    <ListItemText primary="Movie-System" />
-                </ListItemButton>
+                {htmlList}
             </List>
-            {/* <Divider />
-            <List component="nav" aria-label="secondary mailbox folder">
-                <ListItemButton
-                    selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 2)}
-                >
-                    <ListItemText primary="Trash" />
-                </ListItemButton>
-                <ListItemButton
-                    selected={selectedIndex === 3}
-                    onClick={(event) => handleListItemClick(event, 3)}
-                >
-                    <ListItemText primary="Spam" />
-                </ListItemButton>
-            </List> */}
         </>
     );
 }
