@@ -7,22 +7,32 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
-
+const passport = require('./authentication')
+const userRoutes = require('./routes/users')
 const projectRoutes = require('./routes/projects')
 const taskRoutes = require('./routes/tasks')
+const session = require('express-session')
 
 const app = express();
-app.use(cors());
+app.use(cors({origin: 'http://localhost:5173', credentials: true}));
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
   });
-mongoose.connect('mongodb://127.0.0.1:27017/ProjectSync');
+mongoose.connect('mongodb://127.0.0.1:27017/Git-Planner');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));
 
+app.use(session({
+  secret: 'your session secret',
+  resave: false,
+  saveUninitialized: false
+}));
 
+app.use(passport.session())
+
+app.use('/login',userRoutes)
 app.use('/projects',projectRoutes)
 app.use('/tasks',taskRoutes)
 

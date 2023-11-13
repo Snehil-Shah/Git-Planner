@@ -4,15 +4,22 @@ const Project = require('./project');
 // TODO: Add model methods and statics
 
 const userSchema = new mongoose.Schema({
+    githubId: {
+        type: String,
+        required: true,
+        unique: true
+    },
     username:{
         type: String,
         required: true
     },
-    password:{
+    name: {
         type: String,
         required: true
     },
-    projects:[
+    email: String,
+    avatarUrl: String,
+    projects: [
         {
             type: mongoose.ObjectId,
             ref: Project

@@ -1,0 +1,1 @@
+<!-- TODO: add a issues tab where you can see issues directly through the website, also add 'add todo' to each of them -->

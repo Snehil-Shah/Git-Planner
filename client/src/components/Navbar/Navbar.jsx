@@ -44,7 +44,7 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            ProjectSync
+            Git-Planner
           </Typography>
         </Toolbar>
       </AppBar>
