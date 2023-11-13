@@ -18,8 +18,9 @@ export default function ProjectList({ setCredentials }) {
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     };
-
-    let htmlList = projectList.map((project, index) => (
+    let htmlList = null;
+    if (projectList){
+        htmlList = projectList.map((project, index) => (
         <ListItemButton
             key={index}
             selected={selectedIndex == project.id}
@@ -27,7 +28,7 @@ export default function ProjectList({ setCredentials }) {
         >
             <ListItemText primary={project.projectName} />
         </ListItemButton>
-    ))
+    ))}
 
     return (
         <>

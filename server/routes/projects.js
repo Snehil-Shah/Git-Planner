@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const projectController = require('../controllers/projects')
+const projectController = require('../controllers/projects');
+const { isAuthenticated } = require('../middleware');
+
+router.use(isAuthenticated);
 
 router.route('/')
     .get(projectController.getProjects)

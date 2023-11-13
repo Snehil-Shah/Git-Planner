@@ -12,13 +12,11 @@ const userRoutes = require('./routes/users')
 const projectRoutes = require('./routes/projects')
 const taskRoutes = require('./routes/tasks')
 const session = require('express-session')
+const { handleBadRequests } = require('./middleware');
 
 const app = express();
 app.use(cors({origin: 'http://localhost:5173', credentials: true}));
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
+app.use(handleBadRequests);
 mongoose.connect('mongodb://127.0.0.1:27017/Git-Planner');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

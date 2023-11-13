@@ -27,4 +27,11 @@ const userSchema = new mongoose.Schema({
     ]
 })
 
+
+// FIXME: implement this middleware for deleting user
+// userSchema.pre('findOneAndDelete',async function(next){
+//     const user = await this.model.findOne(this.getFilter());
+//     await
+// })
+
 module.exports = mongoose.model('User', userSchema);
