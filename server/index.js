@@ -12,7 +12,7 @@ const userRoutes = require('./routes/users')
 const projectRoutes = require('./routes/projects')
 const taskRoutes = require('./routes/tasks')
 const session = require('express-session')
-const { handleBadRequests } = require('./middleware');
+const { handleBadRequests, isAuthenticated } = require('./middleware');
 
 const app = express();
 app.use(cors({origin: 'http://localhost:5173', credentials: true}));
@@ -29,10 +29,12 @@ app.use(session({
 }));
 
 app.use(passport.session())
-
+app.get('/',(_req,res)=>{
+  res.status(303).redirect('http://localhost:5173')
+})
 app.use('/login',userRoutes)
-app.use('/projects',projectRoutes)
-app.use('/tasks',taskRoutes)
+app.use('/projects',isAuthenticated, projectRoutes)
+app.use('/tasks',isAuthenticated, taskRoutes)
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');

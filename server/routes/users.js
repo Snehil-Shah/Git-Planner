@@ -4,7 +4,7 @@ const passport = require('../authentication')
 
 router.get('/github',passport.authenticate('github',{scope: ['user:email','repo']}))
 router.get('/github/callback', passport.authenticate('github',{failureRedirect: '/login'}), (req,res) => {
-    res.redirect('http://localhost:5173')
+    res.redirect('http://localhost:3000')
 }
 )
 router.get('/check-auth',function(req,res){

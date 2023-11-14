@@ -6,11 +6,13 @@ const User = require('./models/user')
 passport.use(new githubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/login/github/callback'
+    callbackURL: 'http://localhost:3000/login/github/callback',
+    scope: ['user:email','repo']
 },
     function (accessToken, refreshToken, profile, done) {
-        User.findOne({ githubId: profile.id }).then(function (user) {
-            if (user) {
+        User.findOne({ githubId: profile.id }).then(function (userDoc) {
+            if (userDoc) {
+                const user = {id: userDoc.id, accessToken: accessToken};
                 return done(null, user)
             } else {
                 User.create({
@@ -19,7 +21,8 @@ passport.use(new githubStrategy({
                     name: profile.displayName,
                     email: (profile.emails && profile.emails[0] ? profile.emails[0].value : 'private'),
                     avatarUrl: profile.photos[0].value
-                }).then((user) => {
+                }).then((userDoc) => {
+                    const user = {id: userDoc.id, accessToken: accessToken};
                     return done(null, user);
                 })
             }
@@ -28,11 +31,11 @@ passport.use(new githubStrategy({
 ));
 
 passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user);
 });
 
-passport.deserializeUser(function (user_id, done) {
-    done(null,user_id)
+passport.deserializeUser(function (user, done) {
+    done(null,user)
 });
 
 module.exports = passport;
