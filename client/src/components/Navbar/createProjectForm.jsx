@@ -32,7 +32,7 @@ export default function CreateTaskForm({ refreshProjectList }) {
 
     useEffect(() => {
         githubList().then((list)=> {setGithubList(list);});
-    }, [])
+    }, [formOpen])
 
     const handleFormOpen = () => {
         setForm(true);
@@ -46,12 +46,12 @@ export default function CreateTaskForm({ refreshProjectList }) {
         const { index, style } = props;
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
-                <ListItemButton onClick={!githubProjects[index].alreadyCreated ? async () => {
-                    await submitCreateProjectForm(githubProjects[index], 'github');
+                <ListItemButton onClick={!(githubProjects[index].alreadyCreated) ? async () => {
+                    await submitCreateProjectForm(githubProjects[index].name, 'github');
                     getProjects().then((projects) => refreshProjectList(projects));
                     setForm(false);
                 } : null} disabled={githubProjects[index].alreadyCreated}>
-                    <GitHubIcon style={{ marginLeft: 2, marginRight: 10 }} />
+                    <GitHubIcon style={{ marginLeft: 1.5, marginRight: 10 }} />
                     <ListItemText style={{ marginLeft: 2 }} primary={githubProjects[index].name} />
                     {!githubProjects[index].alreadyCreated ? <AddIcon sx={{ position: 'absolute', right: 12 }} color='primary' /> : null}
                 </ListItemButton>

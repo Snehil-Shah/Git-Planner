@@ -4,6 +4,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import CreateProjectForm from './createProjectForm';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { getProjects } from '../../services/projects';
 
 export default function ProjectList({ setCredentials }) {
@@ -26,7 +27,7 @@ export default function ProjectList({ setCredentials }) {
             selected={selectedIndex == project.id}
             onClick={(event) => handleListItemClick(event, project.id)}
         >
-            {project.provider == 'github'? <GitHubIcon style={{ marginLeft: 2, marginRight: 8 }} /> : null}
+            {project.provider == 'github' ? <GitHubIcon style={{ marginLeft: 2, marginRight: 8 }} /> : <TaskAltIcon style={{ marginLeft: 2, marginRight: 8 }} fontSize='medium'/>}
             <ListItemText primary={project.projectName} />
         </ListItemButton>
     ))}
