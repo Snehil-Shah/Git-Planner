@@ -11,6 +11,7 @@ const passport = require('./authentication')
 const userRoutes = require('./routes/users')
 const projectRoutes = require('./routes/projects')
 const taskRoutes = require('./routes/tasks')
+const githubRoutes = require('./routes/github')
 const session = require('express-session')
 const { handleBadRequests, isAuthenticated } = require('./middleware');
 
@@ -35,6 +36,7 @@ app.get('/',(_req,res)=>{
 app.use('/login',userRoutes)
 app.use('/projects',isAuthenticated, projectRoutes)
 app.use('/tasks',isAuthenticated, taskRoutes)
+app.use('/github',isAuthenticated, githubRoutes)
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
