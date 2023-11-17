@@ -8,7 +8,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { getProjects } from '../../services/projects';
 
 export default function ProjectList({ setCredentials }) {
-    const [selectedIndex, setSelectedIndex] = React.useState('0');
+    const [selectedIndex, setSelectedIndex] = React.useState({id: null, projectName: null, provider: null});
     const [projectList, setProjects] = React.useState([{id: null, projectName: null, provider: null}]);
     React.useEffect(() => {
         setCredentials(selectedIndex);
@@ -24,8 +24,8 @@ export default function ProjectList({ setCredentials }) {
         htmlList = projectList.map((project, index) => (
         <ListItemButton
             key={index}
-            selected={selectedIndex == project.id}
-            onClick={(event) => handleListItemClick(event, project.id)}
+            selected={selectedIndex == project}
+            onClick={(event) => handleListItemClick(event, project)}
         >
             {project.provider == 'github' ? <GitHubIcon style={{ marginLeft: 2, marginRight: 8 }} /> : <TaskAltIcon style={{ marginLeft: 2, marginRight: 8 }} fontSize='medium'/>}
             <ListItemText primary={project.projectName} />

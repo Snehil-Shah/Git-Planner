@@ -4,7 +4,13 @@ const todoSchema = new mongoose.Schema({
     task: {
         type: String,
         required: true
-    }
+    },
+    description: {
+        type: String
+    },
+    githubIssue: {
+        type: String
+    },
     }, {timestamps: true}
 )
 

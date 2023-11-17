@@ -20,7 +20,8 @@ async function githubList(){
     const projectList = await getProjects();
     const projectNames = projectList.map(project => project.projectName);
     return repoList.map((gitProject)=>({
-        name: gitProject,
+        name: gitProject.name,
+        link: gitProject.repoLink,
         alreadyCreated: projectNames.includes(gitProject)
     }))
 }
@@ -47,7 +48,7 @@ export default function CreateTaskForm({ refreshProjectList }) {
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
                 <ListItemButton onClick={!(githubProjects[index].alreadyCreated) ? async () => {
-                    await submitCreateProjectForm(githubProjects[index].name, 'github');
+                    await submitCreateProjectForm(githubProjects[index].name, 'github', githubProjects[index].link);
                     getProjects().then((projects) => refreshProjectList(projects));
                     setForm(false);
                 } : null} disabled={githubProjects[index].alreadyCreated}>

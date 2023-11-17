@@ -21,9 +21,9 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function TaskList({ projectId }) {
+export default function TaskList({ project }) {
   const [taskList, setTasks] = React.useState([{_id: null, task: null}]);
-  React.useEffect(() => { getTasks(projectId).then((projectTasks) => setTasks(projectTasks)) }, [projectId]);
+  React.useEffect(() => { getTasks(project.id).then((projectTasks) => setTasks(projectTasks)) }, [project.id]);
   // HACK: Make this a separate item component and organize them in some folder like utils or smth
   let htmlList = taskList.map((tasks) => (<Item key={tasks['_id']}>
     <ListItem disablePadding>
@@ -31,8 +31,8 @@ export default function TaskList({ projectId }) {
         <ListItemText primary={tasks.task} />
       </ListItemButton>
       <IconButton aria-label="delete" size="medium" onClick={async () => {
-        await deleteTask(projectId, tasks['_id']);
-        getTasks(projectId).then((projectTasks) => setTasks(projectTasks));
+        await deleteTask(project.id, tasks['_id']);
+        getTasks(project.id).then((projectTasks) => setTasks(projectTasks));
       }}>
         <DeleteIcon fontSize="inherit" />
       </IconButton>
@@ -45,7 +45,7 @@ export default function TaskList({ projectId }) {
           {htmlList}
         </Stack>
       </List>
-      <CreateTaskForm projectId={projectId} refreshTaskList={setTasks} />
+      <CreateTaskForm project={project} refreshTaskList={setTasks} />
     </Box>
   );
 }

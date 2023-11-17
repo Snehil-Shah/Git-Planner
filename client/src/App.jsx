@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import Login from './components/Login'
 import { checkAuth } from "./services/users";

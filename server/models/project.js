@@ -6,11 +6,13 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // TODO:a github and a normal project should look different, also make sure the add git project isn't visible anymore in create project menu
     provider: {
         type: String,
         required: true,
         enum: ['user', 'github']
+    },
+    repoLink: {
+        type: String
     },
     todoList: [{
         type: mongoose.ObjectId,

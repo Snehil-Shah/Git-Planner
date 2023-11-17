@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Button } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { drawerWidth, Main, AppBar, DrawerHeader } from '../../utils/Navbar';
 import Tasklist from '../Taskview/TaskList';
@@ -17,7 +19,7 @@ import ProjectList from './ProjectList';
 export default function Navbar() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [credentials, LoadData] = React.useState('0')
+  const [credentials, LoadData] = React.useState({id: null, projectName: null, provider: null, repoLink: null})
 
 
 
@@ -46,6 +48,9 @@ export default function Navbar() {
           <Typography variant="h6" noWrap component="div">
             Git-Planner
           </Typography>
+          {credentials.provider == 'github' ? <Button color="inherit" variant='text' sx={{position: 'absolute', right:10}} onClick={
+            ()=> { window.open(credentials.repoLink)}
+          }>Repository <OpenInNewIcon sx={{ml:0.7}}/></Button> : null }
         </Toolbar>
       </AppBar>
       <Drawer
@@ -72,7 +77,7 @@ export default function Navbar() {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Tasklist projectId={credentials} />
+        <Tasklist project={credentials} />
       </Main>
     </Box>
   );

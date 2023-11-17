@@ -3,9 +3,9 @@ const Project = require('../models/project');
 
 module.exports.createTask = async (req, res) => {
     try {
-        const { projectId, taskName } = req.body;
-        const newTask = await Todo.create({ task: taskName });
-        await Project.findOneAndUpdate({ _id: projectId }, { $push: {todoList: newTask._id} })
+        const { projectId, taskName, taskDescription, linkedIssue } = req.body;
+        const newTask = await Todo.create({ task: taskName, description: taskDescription, githubIssue: linkedIssue });
+        await Project.findOneAndUpdate({ _id: projectId }, { $push: {todoList: newTask._id} });
         res.status(201).send(newTask);
     }
     catch(err){

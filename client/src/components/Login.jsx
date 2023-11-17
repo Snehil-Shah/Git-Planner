@@ -21,7 +21,7 @@ function Login() {
           </Typography>
           </Box>
           <Box display='flex' justifyContent="center" alignItems='center'>
-          <Button variant="contained" disableElevation href='http://localhost:3000/login/github'>
+          <Button variant="contained" href='http://localhost:3000/login/github'>
             Sign in with Github <GitHubIcon style={{ marginLeft: 8 }} />
           </Button>
           </Box>
