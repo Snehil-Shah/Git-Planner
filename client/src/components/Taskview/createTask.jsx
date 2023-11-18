@@ -13,7 +13,7 @@ import { getTasks, submitTodoForm, getIssuesList } from '../../services/tasks';
 export default function CreateTaskForm({ project, refreshTaskList }) {
 
     const [formOpen, setForm] = useState(false);
-    const [formContent, setFormContent] = useState({ taskName: null, taskDescription: null, linkedIssue: null });
+    const [formContent, setFormContent] = useState({ taskName: null, taskDescription: null, linkedIssue: {name: null, link: null} });
     const [issues, setIssueList] = useState([])
     const handleFormOpen = () => {
         setForm(true);
@@ -25,7 +25,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
     useEffect(() => {
         getIssuesList(project.projectName).then((list) => {
             if (list) {
-                const issueList = list.map((issue) => (`#${issue.id}: ${issue.name}`))
+                const issueList =  list.map((issue) => ({name: `#${issue.id}: ${issue.name}`, link: issue.link}))
                 setIssueList(issueList);
             }
         })
@@ -65,9 +65,11 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         id="issue-selector"
                         options={issues}
                         fullWidth
+                        defaultValue={null}
                         sx={{ my: 2 }}
+                        getOptionLabel={(option) => option.name}
                         renderInput={(params) => <TextField {...params} label="Link an Issue" />}
-                        onChange={(evt, value) => {setFormContent(prevContent => ({ ...prevContent, linkedIssue: value })) }}
+                        onChange={(evt, value) => {setFormContent(prevContent => ({ ...prevContent, linkedIssue: {name: value.name, link: value.link} })) }}
                     /> : null}
                 </DialogContent>
                 <DialogActions sx={{mb: 2, mr:3, mt:0, pt:0}}>

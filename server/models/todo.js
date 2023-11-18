@@ -9,7 +9,8 @@ const todoSchema = new mongoose.Schema({
         type: String
     },
     githubIssue: {
-        type: String
+        name: String,
+        link: String
     },
     }, {timestamps: true}
 )
