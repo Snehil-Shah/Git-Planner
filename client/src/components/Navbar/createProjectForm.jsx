@@ -22,7 +22,7 @@ async function githubList(){
     return repoList.map((gitProject)=>({
         name: gitProject.name,
         link: gitProject.repoLink,
-        alreadyCreated: projectNames.includes(gitProject)
+        alreadyCreated: projectNames.includes(gitProject.name)
     }))
 }
 
@@ -105,7 +105,7 @@ export default function CreateTaskForm({ refreshProjectList }) {
                 <Divider variant='middle' />
                 <Box sx={{ mt: 2, mx: 2 }}>
                     <FixedSizeList
-                        height={githubProjects.length * 50}
+                        height={Math.min(githubProjects.length * 50,300)}
                         itemSize={46}
                         itemCount={githubProjects.length}
                         overscanCount={5}
