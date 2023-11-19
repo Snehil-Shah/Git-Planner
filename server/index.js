@@ -2,6 +2,7 @@
 // TODO: learn middlewares and how colt steele added middlewares in route handlers
 // TODO: Normal sign in option bhi daal
 // FIXME: find out about do we serve files over our express server, or the vite server somehow runs during production too. if the express way, how does that affect API interactions, is there an internal template-y server-y way to serve public REACT assets
+// BUG: When github servers are down, the app shouldn't crash, handle the error
 
 const express = require('express')
 const cors = require('cors')

@@ -9,7 +9,7 @@ import { getProjects } from '../../services/projects';
 
 export default function ProjectList({ setCredentials }) {
     const [selectedIndex, setSelectedIndex] = React.useState({id: null, projectName: null, provider: null});
-    const [projectList, setProjects] = React.useState([{id: null, projectName: null, provider: null}]);
+    const [projectList, setProjects] = React.useState([]);
     React.useEffect(() => {
         setCredentials(selectedIndex);
     }, [selectedIndex, setCredentials])

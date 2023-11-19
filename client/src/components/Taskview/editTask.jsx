@@ -6,13 +6,13 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
-import { getTasks, editTask, getIssuesList } from '../../services/tasks';
+import {  editTask, getIssuesList } from '../../services/tasks';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditTaskForm({ project,task, refreshTaskList }) {
 
     const [formOpen, setForm] = useState(false);
-    const [formContent, setFormContent] = useState({ taskName: task.task, taskDescription: task.description, linkedIssue: task.githubIssue });
+    const [formContent, setFormContent] = useState({name: task.task, description: task.description, githubIssue: task.githubIssue});
     const [issues, setIssueList] = useState([])
     const handleFormOpen = () => {
         setForm(true);
@@ -32,7 +32,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
 
     return (
         <>
-            <Button variant="outlined" size='small' color='secondary' sx={{mr: 1}} onClick={async () => {
+            <Button variant="outlined" size='small' color={task.completed? 'info':'secondary'} sx={{mr: 1}} onClick={async () => {
               handleFormOpen()
             }}>{<EditIcon fontSize='small' />}</Button>
             <Dialog open={formOpen} onClose={handleFormClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth={true}>
@@ -47,7 +47,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
                         fullWidth
                         variant='standard'
                         defaultValue={task.task}
-                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, taskName: evt.target.value })) }}
+                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, task: evt.target.value })) }}
                     />
                     <TextField
                         id="description"
@@ -60,7 +60,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
                         variant='outlined'
                         margin='normal'
                         defaultValue={task.description}
-                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, taskDescription: evt.target.value })) }}
+                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, description: evt.target.value })) }}
                     />
                     {(issues.length !== 0 && project.provider == 'github') ? <Autocomplete
                         id="issue-selector"
@@ -71,7 +71,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
                         sx={{ my: 2 }}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) => <TextField {...params} label="Link an Issue" />}
-                        onChange={(evt, value) => {setFormContent(prevContent => ({ ...prevContent, linkedIssue: {name: value.name, link: value.link} })) }}
+                        onChange={(evt, value) => {setFormContent(prevContent => ({ ...prevContent, githubIssue: {name: value.name, link: value.link} })) }}
                     /> : null}
                 </DialogContent>
                 <DialogActions sx={{mb: 2, mr:3, mt:0, pt:0}}>
@@ -79,9 +79,9 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
                         Cancel
                     </Button>
                     <Button onClick={async () => {
-                        await editTask(task['_id'], formContent);
-                        getTasks(project.id).then((projectDetails) => refreshTaskList(projectDetails));
+                        refreshTaskList(prevTasks=>prevTasks.map(t=>t._id == task._id? {...t,...formContent} : t));
                         setForm(false);
+                        await editTask(task['_id'], formContent);
                     }
                     } color="primary" variant='contained'>
                         Save

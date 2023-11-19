@@ -48,9 +48,9 @@ export default function CreateTaskForm({ refreshProjectList }) {
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
                 <ListItemButton onClick={!(githubProjects[index].alreadyCreated) ? async () => {
-                    await submitCreateProjectForm(githubProjects[index].name, 'github', githubProjects[index].link);
-                    getProjects().then((projects) => refreshProjectList(projects));
+                    refreshProjectList(prevList=>[...prevList, {projectName: githubProjects[index].name, repoLink: githubProjects[index].link, provider: 'github'}])
                     setForm(false);
+                    await submitCreateProjectForm(githubProjects[index].name, 'github', githubProjects[index].link);
                 } : null} disabled={githubProjects[index].alreadyCreated}>
                     <GitHubIcon style={{ marginLeft: 1.5, marginRight: 10 }} />
                     <ListItemText style={{ marginLeft: 2 }} primary={githubProjects[index].name} />
@@ -94,9 +94,9 @@ export default function CreateTaskForm({ refreshProjectList }) {
                 </DialogContent>
                 <Box sx={{ mx: 3 }}>
                     <Button onClick={async () => {
-                        await submitCreateProjectForm(projectName, 'user');
-                        getProjects().then((projects) => refreshProjectList(projects));
+                        refreshProjectList(prevList=>[...prevList, {projectName: projectName, provider: 'user'}])
                         setForm(false);
+                        await submitCreateProjectForm(projectName, 'user');
                     }
                     } color="primary" variant='contained' fullWidth disableElevation sx={{ mb: 2 }}>
                         Create

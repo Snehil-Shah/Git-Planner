@@ -8,12 +8,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import { getTasks, createTask, getIssuesList } from '../../services/tasks';
+import { createTask, getIssuesList } from '../../services/tasks';
 
 export default function CreateTaskForm({ project, refreshTaskList }) {
 
     const [formOpen, setForm] = useState(false);
-    const [formContent, setFormContent] = useState({ taskName: null, taskDescription: null, linkedIssue: {name: null, link: null} });
+    const [formContent, setFormContent] = useState();
     const [issues, setIssueList] = useState([])
     const handleFormOpen = () => {
         setForm(true);
@@ -47,7 +47,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         type="text"
                         fullWidth
                         variant='standard'
-                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, taskName: evt.target.value })) }}
+                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, task: evt.target.value })) }}
                     />
                     <TextField
                         id="description"
@@ -59,7 +59,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         sx={{ mt: 3 }}
                         variant='outlined'
                         margin='normal'
-                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, taskDescription: evt.target.value })) }}
+                        onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, description: evt.target.value })) }}
                     />
                     {(issues.length !== 0 && project.provider == 'github') ? <Autocomplete
                         id="issue-selector"
@@ -69,7 +69,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         sx={{ my: 2 }}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) => <TextField {...params} label="Link an Issue" />}
-                        onChange={(evt, value) => {setFormContent(prevContent => ({ ...prevContent, linkedIssue: {name: value.name, link: value.link} })) }}
+                        onChange={(evt, value) => {setFormContent(prevContent => ({ ...prevContent, githubIssue: {name: value.name, link: value.link} })) }}
                     /> : null}
                 </DialogContent>
                 <DialogActions sx={{mb: 2, mr:3, mt:0, pt:0}}>
@@ -77,9 +77,9 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         Cancel
                     </Button>
                     <Button onClick={async () => {
-                        await createTask(project.id, formContent.taskName, formContent.taskDescription, formContent.linkedIssue);
-                        getTasks(project.id).then((projectDetails) => refreshTaskList(projectDetails));
+                        refreshTaskList(prevList=> [...prevList, formContent])
                         setForm(false);
+                        await createTask(project.id, formContent.task, formContent.description, formContent.githubIssue);
                     }
                     } color="primary" variant='contained'>
                         Add

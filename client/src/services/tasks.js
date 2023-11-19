@@ -1,6 +1,6 @@
 export async function createTask(projectId, taskName, taskDescription, linkedIssue) {
   const body = { projectId: projectId, taskName: taskName, taskDescription: taskDescription }
-  if (linkedIssue.name) {
+  if (linkedIssue) {
     body.linkedIssue = linkedIssue;
   }
   await fetch('http://localhost:3000/tasks', {
@@ -33,7 +33,7 @@ export async function deleteTask(projectId, taskId) {
 }
 
 export async function editTask(taskId, editDetails){
-  const body = {task: editDetails.taskName, description: editDetails.taskDescription, githubIssue: editDetails.linkedIssue}
+  const body = editDetails;
   await fetch(`http://localhost:3000/tasks/${taskId}`,{
     method: 'PATCH',
     credentials: 'include',
@@ -46,6 +46,6 @@ export async function getIssuesList(repoName) {
   if (repoName != null) {
     const response = await fetch(`http://localhost:3000/github/${repoName}/issues`, { credentials: 'include' });
     const issueList = await response.json();
-    return (issueList.length ? issueList.map((issue) => ({ id: issue.number, name: issue.title, link: issue.html_url })) : issueList);
+    return (issueList.length || issueList.message != 'Not Found' ? issueList.map((issue) => ({ id: issue.number, name: issue.title, link: issue.html_url })) : []);
   }
 }
