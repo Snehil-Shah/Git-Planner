@@ -23,3 +23,14 @@ module.exports.deleteTask = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
+module.exports.editTask = async(req,res) => {
+    try{
+        const {taskId} = req.params;
+        const  editDetails  = req.body;
+        const updatedTask = await Todo.findByIdAndUpdate(taskId, editDetails);
+        res.status(200).send(updatedTask)
+    } catch(err){
+        res.status(500).send('Internal Server Error');
+    }
+}

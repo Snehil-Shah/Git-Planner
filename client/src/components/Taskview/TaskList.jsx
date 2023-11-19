@@ -10,30 +10,37 @@ import CreateTaskForm from './createTask';
 import { getTasks } from '../../services/tasks';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import { deleteTask } from '../../services/tasks';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Button } from '@mui/material';
+import EditTaskForm from './editTask';
 
 export default function TaskList({ project }) {
-  const [taskList, setTasks] = React.useState([{ _id: null, task: null, description: null, githubIssue: null }]);
+  const [taskList, setTasks] = React.useState([]);
+
   React.useEffect(() => { getTasks(project.id).then((projectTasks) => setTasks(projectTasks)) }, [project.id]);
   // HACK: Make this a separate item component and organize them in some folder like utils or smth
   let htmlList = taskList.map((task) => (
-    <Accordion key={task['_id']} sx={{ display: 'flex', flexDirection: 'column' }}>
-
+    <Accordion key={task['_id']} sx={{ display: 'flex', flexDirection: 'column', px: 1 }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <Typography variant='body1' fontSize={17}>{task.task}</Typography>
-        {task.githubIssue ? <Button style={{ position: 'absolute', right: 70, bottom: 6.5 }} onClick={(evt) => {
+        {/* <FormControlLabel control={<Checkbox />} label={
+          typography content
+          // TODO
+         } /> */}
+        <Typography variant='body1' fontSize={18}>{task.task}</Typography>
+        {task.githubIssue ? <Button style={{ position: 'absolute', right: 70, bottom: 15 }} onClick={(evt) => {
           evt.stopPropagation()
           window.open(task.githubIssue.link)
-        }}><AdjustIcon color='primary' sx={{ mr: 0.1 }} /><Typography variant='body1' color='#1976d2'>{task.githubIssue.name.split(':')[0]}</Typography></Button> : null}
+        }}><AdjustIcon color='primary' sx={{ mr: 0.1 }} /><Typography variant='body1' sx={{ color: 'primary' }}>{task.githubIssue.name.split(':')[0]}</Typography></Button> : null}
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails sx={{ pt: 0 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          {task.githubIssue && task.githubIssue.name ? <Typography variant='subtitle2'>
+          {task.githubIssue && task.githubIssue.name ? <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
             {task.githubIssue.name}
           </Typography> : null}
           {task.description ?
@@ -45,14 +52,15 @@ export default function TaskList({ project }) {
                 </span>
               ))}
             </Typography> : null}
-          <Button variant="outlined" color='error' sx={{ alignSelf: 'end', mb: 1, mr: 3 }} onClick={async () => {
-            await deleteTask(project.id, task['_id']);
-            getTasks(project.id).then((projectTasks) => setTasks(projectTasks));
-          }}>{<DeleteIcon />}</Button>
+          <Box sx={{ alignSelf: 'end', mr: 3 }}>
+            <EditTaskForm project={project} task={task} refreshTaskList={setTasks} />
+            <Button variant="outlined" size='small' color='error' onClick={async () => {
+              await deleteTask(project.id, task['_id']);
+              getTasks(project.id).then((projectTasks) => setTasks(projectTasks));
+            }}>{<DeleteIcon fontSize='small' />}</Button>
+          </Box>
         </Box>
       </AccordionDetails>
-
-
     </Accordion>
   ))
   return (

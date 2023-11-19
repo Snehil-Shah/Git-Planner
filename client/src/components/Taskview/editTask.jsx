@@ -6,14 +6,13 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import { getTasks, createTask, getIssuesList } from '../../services/tasks';
+import { getTasks, editTask, getIssuesList } from '../../services/tasks';
+import EditIcon from '@mui/icons-material/Edit';
 
-export default function CreateTaskForm({ project, refreshTaskList }) {
+export default function EditTaskForm({ project,task, refreshTaskList }) {
 
     const [formOpen, setForm] = useState(false);
-    const [formContent, setFormContent] = useState({ taskName: null, taskDescription: null, linkedIssue: {name: null, link: null} });
+    const [formContent, setFormContent] = useState({ taskName: task.task, taskDescription: task.description, linkedIssue: task.githubIssue });
     const [issues, setIssueList] = useState([])
     const handleFormOpen = () => {
         setForm(true);
@@ -33,11 +32,11 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
 
     return (
         <>
-            <Fab color="primary" aria-label="add" style={{ position: "fixed", right: "20px", bottom: "20px" }} onClick={handleFormOpen}>
-                <AddIcon />
-            </Fab>
+            <Button variant="outlined" size='small' color='secondary' sx={{mr: 1}} onClick={async () => {
+              handleFormOpen()
+            }}>{<EditIcon fontSize='small' />}</Button>
             <Dialog open={formOpen} onClose={handleFormClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth={true}>
-                <DialogTitle id="form-dialog-title">Add Todo</DialogTitle>
+                <DialogTitle id="form-dialog-title">Edit Todo</DialogTitle>
                 <DialogContent sx={{ px: 4 }}>
                     <TextField
                         autoFocus
@@ -47,6 +46,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         type="text"
                         fullWidth
                         variant='standard'
+                        defaultValue={task.task}
                         onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, taskName: evt.target.value })) }}
                     />
                     <TextField
@@ -59,13 +59,15 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         sx={{ mt: 3 }}
                         variant='outlined'
                         margin='normal'
+                        defaultValue={task.description}
                         onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, taskDescription: evt.target.value })) }}
                     />
                     {(issues.length !== 0 && project.provider == 'github') ? <Autocomplete
                         id="issue-selector"
                         options={issues}
                         fullWidth
-                        defaultValue={null}
+                        defaultValue={task.githubIssue}
+                        isOptionEqualToValue={(option, value) => option.name === value.name && option.link === value.link}
                         sx={{ my: 2 }}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) => <TextField {...params} label="Link an Issue" />}
@@ -77,12 +79,12 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         Cancel
                     </Button>
                     <Button onClick={async () => {
-                        await createTask(project.id, formContent.taskName, formContent.taskDescription, formContent.linkedIssue);
+                        await editTask(task['_id'], formContent);
                         getTasks(project.id).then((projectDetails) => refreshTaskList(projectDetails));
                         setForm(false);
                     }
                     } color="primary" variant='contained'>
-                        Add
+                        Save
                     </Button>
                 </DialogActions>
             </Dialog>

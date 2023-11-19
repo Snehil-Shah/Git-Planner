@@ -1,3 +1,5 @@
+// TODO: Profile details, link github for normal users
+
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';

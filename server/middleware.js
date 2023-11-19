@@ -2,7 +2,7 @@ module.exports.isAuthenticated = function(req,res,next){
     if(req.user){
         next();
     } else{
-    return res.redirect('http://localhost:3000')}
+    return res.status(401).redirect('http://localhost:3000')}
 }
 
 module.exports.handleBadRequests = function (err,req,res,next){
