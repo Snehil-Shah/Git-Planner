@@ -15,7 +15,8 @@ module.exports.createTask = async (req, res) => {
 
 module.exports.deleteTask = async (req, res) => {
     try{
-        const { taskId, projectId } = req.body;
+        const { taskId } = req.params;
+        const {projectId} = req.body;
         await Project.findOneAndUpdate({_id: projectId},{$pull : {todoList: taskId}});
         await Todo.findByIdAndDelete(taskId);
         res.status(200).send('Deleted Task');
@@ -28,8 +29,8 @@ module.exports.editTask = async(req,res) => {
     try{
         const {taskId} = req.params;
         const  editDetails  = req.body;
-        const updatedTask = await Todo.findByIdAndUpdate(taskId, editDetails);
-        res.status(200).send(updatedTask)
+        const oldTask = await Todo.findByIdAndUpdate(taskId, editDetails);
+        res.status(200).send(oldTask)
     } catch(err){
         res.status(500).send('Internal Server Error');
     }

@@ -21,13 +21,12 @@ export async function getTasks(projectId) {
 }
 
 export async function deleteTask(projectId, taskId) {
-  await fetch('http://localhost:3000/tasks', {
+  await fetch(`http://localhost:3000/tasks/${taskId}`, {
     method: 'DELETE',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      projectId: projectId,
-      taskId: taskId
+      projectId: projectId
     })
   })
 }
