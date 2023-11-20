@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-
+// TODO: mouse hover over all buttons
 // TODO: Alerts and loading screens and flashes
 // TODO: Set github colour theme and font family
 // TODO: Maybe learn tailwind and complete the UI from scratch only after the basic working app is complete using MUI

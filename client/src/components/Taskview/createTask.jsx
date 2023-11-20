@@ -23,13 +23,15 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
     };
 
     useEffect(() => {
+        if(project){
         getIssuesList(project.projectName).then((list) => {
             if (list) {
                 const issueList =  list.map((issue) => ({name: `#${issue.id}: ${issue.name}`, link: issue.link}))
                 setIssueList(issueList);
             }
         })
-    }, [formOpen, project.projectName])
+    }
+    }, [formOpen, project])
 
     return (
         <>

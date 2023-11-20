@@ -7,7 +7,11 @@ router.get('/github/callback', passport.authenticate('github',{failureRedirect: 
     res.redirect('http://localhost:3000')
 }
 )
-router.get('/check-auth',function(req,res){
-    res.json({isAuthenticated: (req.user ? true:false)})
+router.get('/fetchAuth',function(req,res){
+    if (req.user){
+    res.json({name: req.user.name, username: req.user.username, avatar: req.user.avatar})
+    } else{
+        res.status(401).redirect('http://localhost:3000')
+    }
 })
 module.exports = router;

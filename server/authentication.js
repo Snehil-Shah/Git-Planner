@@ -12,7 +12,7 @@ passport.use(new githubStrategy({
     function (accessToken, refreshToken, profile, done) {
         User.findOne({ githubId: profile.id }).then(function (userDoc) {
             if (userDoc) {
-                const user = {id: userDoc.id,username: userDoc.username, accessToken: accessToken};
+                const user = {id: userDoc.id,username: userDoc.username, name:userDoc.name, avatar: userDoc.avatarUrl, accessToken: accessToken};
                 return done(null, user)
             } else {
                 User.create({
@@ -22,7 +22,7 @@ passport.use(new githubStrategy({
                     email: (profile.emails && profile.emails[0] ? profile.emails[0].value : 'private'),
                     avatarUrl: profile.photos[0].value
                 }).then((userDoc) => {
-                    const user = {id: userDoc.id,username: userDoc.username, accessToken: accessToken};
+                    const user = {id: userDoc.id,username: userDoc.username, name:userDoc.name, avatar: userDoc.avatarUrl, accessToken: accessToken};
                     return done(null, user);
                 })
             }

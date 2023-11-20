@@ -18,7 +18,8 @@ import DeleteTaskForm from './deleteTask';
 export default function TaskList({ project }) {
   const [taskList, setTasks] = React.useState([]);
 
-  React.useEffect(() => { getTasks(project.id).then((projectTasks) => setTasks(projectTasks)) }, [project]);
+  React.useEffect(() => { if (project){
+    getTasks(project.id).then((projectTasks) => setTasks(projectTasks)) }}, [project]);
   // HACK: Make this a separate item component and organize them in some folder like utils or smth
   let htmlList = taskList.map((task, index) => (
     <Accordion key={index}

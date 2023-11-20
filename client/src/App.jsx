@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar/Navbar'
 import Login from './components/Login'
-import { checkAuth } from "./services/users";
+import { fetchCredentials } from "./services/users";
 
+// TODO: Add tooltips in a lot of places
 // FIXME: Make client side authentication checks more robust
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [credentials, setAuthentication] = useState();
   useEffect(function(){
-    checkAuth().then((isUser)=>setIsAuthenticated(isUser));
+    fetchCredentials().then((User)=>setAuthentication(User));
   },[]);
   return (
     <>
-      {isAuthenticated ? <Navbar/> : <Login setAuthentication = {setIsAuthenticated}/>}
+      {credentials ? <Navbar Logout ={setAuthentication} credentials={credentials}/> : <Login/>}
     </>
   )
 }

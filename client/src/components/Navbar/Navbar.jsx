@@ -10,20 +10,18 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Button } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { drawerWidth, Main, AppBar, DrawerHeader } from '../../utils/Navbar';
 import Tasklist from '../Taskview/TaskList';
 import ProjectList from './ProjectList';
+import ResponsiveAppBar from './Profile';
 
-export default function Navbar() {
+export default function Navbar({Logout, credentials}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [credentials, LoadData] = React.useState({id: null, projectName: null, provider: null, repoLink: null})
-
-
+  const [project, LoadData] = React.useState()
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -37,23 +35,26 @@ export default function Navbar() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Git-Planner
-          </Typography>
-          {credentials.provider == 'github' ? <Button color="inherit" variant='text' sx={{position: 'absolute', right:10}} onClick={
-            ()=> { window.open(credentials.repoLink)}
-          }>Repository <OpenInNewIcon sx={{ml:0.7}}/></Button> : null }
-        </Toolbar>
+        <Box sx={{display:'flex', justifyContent:'space-between'}}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Git-Planner
+            </Typography>
+            {project && project.provider == 'github' ? <IconButton color="inherit" variant='text' onClick={
+              () => { window.open(project.repoLink) }
+            }><OpenInNewIcon /></IconButton> : null}
+          </Toolbar>
+          <ResponsiveAppBar credentials={credentials}/>
+        </Box>
       </AppBar>
       <Drawer
         sx={{
@@ -75,11 +76,11 @@ export default function Navbar() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <ProjectList setCredentials={LoadData} />
+        <ProjectList setProject={LoadData} />
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Tasklist project={credentials} />
+        <Tasklist project={project} />
       </Main>
     </Box>
   );

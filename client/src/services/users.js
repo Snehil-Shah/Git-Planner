@@ -1,5 +1,5 @@
-export async function checkAuth(){
-    const res = await fetch('http://localhost:3000/login/check-auth',{credentials: "include"});
+export async function fetchCredentials(){
+    const res = await fetch('http://localhost:3000/login/fetchAuth',{credentials: "include"});
     const response = await res.json();
-    return response.isAuthenticated;
+    return response;
 }
