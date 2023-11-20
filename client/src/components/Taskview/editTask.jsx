@@ -32,7 +32,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
 
     return (
         <>
-            <Button variant="outlined" size='small' color={task.completed? 'info':'secondary'} sx={{mr: 1}} onClick={async () => {
+            <Button variant="outlined" size='small' color={task.completed? 'info':'secondary'} sx={{mr: 1, py: 0.75}} onClick={async () => {
               handleFormOpen()
             }}>{<EditIcon fontSize='small' />}</Button>
             <Dialog open={formOpen} onClose={handleFormClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth={true}>

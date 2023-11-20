@@ -9,12 +9,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CreateTaskForm from './createTask';
 import { editTask, getTasks } from '../../services/tasks';
 import AdjustIcon from '@mui/icons-material/Adjust';
-import { deleteTask } from '../../services/tasks';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import DeleteIcon from '@mui/icons-material/Delete'
 import { Button } from '@mui/material';
 import EditTaskForm from './editTask';
+import DeleteTaskForm from './deleteTask';
 
 export default function TaskList({ project }) {
   const [taskList, setTasks] = React.useState([]);
@@ -59,10 +58,7 @@ export default function TaskList({ project }) {
             </Typography> : null}
           <Box sx={{ alignSelf: 'end', mr: 3 }}>
             <EditTaskForm project={project} task={task} refreshTaskList={setTasks} />
-            <Button variant="outlined" size='small' color='error' onClick={async () => {
-              setTasks(prevTasks=>prevTasks.filter((t)=>t._id != task._id))
-              await deleteTask(project.id, task['_id']);
-            }}>{<DeleteIcon fontSize='small' />}</Button>
+            <DeleteTaskForm project={project} task={task} refreshTaskList={setTasks} />
           </Box>
         </Box>
       </AccordionDetails>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 
+// TODO: Alerts and loading screens and flashes
 // TODO: Set github colour theme and font family
 // TODO: Maybe learn tailwind and complete the UI from scratch only after the basic working app is complete using MUI
 // BUG: Add loading screen during all async service requests
