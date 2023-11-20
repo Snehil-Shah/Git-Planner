@@ -50,8 +50,8 @@ function ProfileIcon({ logoutCallback, credentials }) {
           }} color='text.secondary' noWrap>
             {credentials.username}<OpenInNewIcon fontSize='small' sx={{ p: 0, m: 0, pt: 1, textDecoration: 'underline' }} />
           </Link>
-          <Button variant="contained" onClick={() => {
-            logout()
+          <Button variant="contained" onClick={async () => {
+            await logout()
             logoutCallback(null)
           }
           } color="error" sx={{ mt: 2, mb: 0.5 }}>

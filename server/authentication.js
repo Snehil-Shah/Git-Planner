@@ -10,7 +10,6 @@ passport.use(new githubStrategy({
     scope: ['user:email','repo']
 },
     function (accessToken, refreshToken, profile, done) {
-        console.log(profile)
         User.findOne({ githubId: profile.id }).then(function (userDoc) {
             if (userDoc) {
                 const user = {id: userDoc.id,username: userDoc.username, name:userDoc.name, avatar: userDoc.avatarUrl,link: userDoc.githubLink, accessToken: accessToken};

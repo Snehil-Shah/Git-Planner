@@ -7,17 +7,19 @@ router.get('/login/github/callback', passport.authenticate('github', { failureRe
     res.redirect('http://localhost:3000')
 }
 )
-router.post('/logout', (req, res) => {
+router.post('/logout', (req, res, next) => {
     req.logout(function (err) {
-        if (err) { return next(err); }
-        res.redirect('http://localhost:3000');
+        if (err) {
+            return next(err);
+        }
+        res.send('Logout Successful')
     });
-})
+});
 router.get('/fetchAuth', function (req, res) {
     if (req.user) {
         res.json({ name: req.user.name, username: req.user.username, avatar: req.user.avatar, link: req.user.link })
     } else {
-        res.status(401).redirect('http://localhost:3000')
+        res.json(null)
     }
 })
 module.exports = router;
