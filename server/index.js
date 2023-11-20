@@ -34,7 +34,7 @@ app.use(passport.session())
 app.get('/',(_req,res)=>{
   res.status(303).redirect('http://localhost:5173')
 })
-app.use('/login',userRoutes)
+app.use('/user',userRoutes)
 app.use('/projects',isAuthenticated, projectRoutes)
 app.use('/tasks',isAuthenticated, taskRoutes)
 app.use('/github',isAuthenticated, githubRoutes)

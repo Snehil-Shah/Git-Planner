@@ -16,9 +16,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { drawerWidth, Main, AppBar, DrawerHeader } from '../../utils/Navbar';
 import Tasklist from '../Taskview/TaskList';
 import ProjectList from './ProjectList';
-import ResponsiveAppBar from './Profile';
+import ProfileIcon from './Profile';
 
-export default function Navbar({Logout, credentials}) {
+export default function Navbar({manageAuth, credentials}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [project, LoadData] = React.useState()
@@ -53,7 +53,7 @@ export default function Navbar({Logout, credentials}) {
               () => { window.open(project.repoLink) }
             }><OpenInNewIcon /></IconButton> : null}
           </Toolbar>
-          <ResponsiveAppBar credentials={credentials}/>
+          <ProfileIcon credentials={credentials} logoutCallback={manageAuth} />
         </Box>
       </AppBar>
       <Drawer

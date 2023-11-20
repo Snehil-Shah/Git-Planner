@@ -13,7 +13,7 @@ function App() {
   },[]);
   return (
     <>
-      {credentials ? <Navbar Logout ={setAuthentication} credentials={credentials}/> : <Login/>}
+      {credentials ? <Navbar manageAuth ={setAuthentication} credentials={credentials}/> : <Login/>}
     </>
   )
 }
