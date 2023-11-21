@@ -27,14 +27,7 @@ projectSchema.pre('findOneAndDelete', async function (next) {
     next()
 })
 
-// FIXME: implement this middleware, is called when deleting user
 // TODO: Delete project
-// projectSchema.pre('deleteMany', async function (next) {
-    // const docsToDelete = await this.model.find(this.getFilter());
-    // const todoIdsToDelete = docsToDelete.reduce((ids, doc) => ids.concat(doc.todoList), []);
-    // await Todo.deleteMany({ _id: { $in: todoIdsToDelete } });
-    // next();
-// })
 
 module.exports = mongoose.model('Project', projectSchema);
 

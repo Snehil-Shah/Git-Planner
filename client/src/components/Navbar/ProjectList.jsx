@@ -7,15 +7,14 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { getProjects } from '../../services/projects';
 
-export default function ProjectList({ setProject }) {
-    const [selectedIndex, setSelectedIndex] = React.useState({id: null, projectName: null, provider: null});
-    const [projectList, setProjects] = React.useState([]);
+export default function ProjectList({ projectList,setProjects,setProject }) {
+    const [selectedIndex, setSelectedIndex] = React.useState(null);
     React.useEffect(() => {
         setProject(selectedIndex);
     }, [selectedIndex, setProject])
     React.useEffect(() => {
         getProjects().then((projects) => setProjects(projects))
-    }, [])
+    }, [setProjects])
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     };

@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Project = require('./project');
 
-// TODO: Add model methods and statics
-
 const userSchema = new mongoose.Schema({
     githubId: {
         type: String,
@@ -30,12 +28,5 @@ const userSchema = new mongoose.Schema({
         }
     ]
 })
-
-
-// FIXME: implement this middleware for deleting user
-// userSchema.pre('findOneAndDelete',async function(next){
-//     const user = await this.model.findOne(this.getFilter());
-//     await
-// })
 
 module.exports = mongoose.model('User', userSchema);

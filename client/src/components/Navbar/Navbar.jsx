@@ -1,5 +1,3 @@
-// TODO: Profile details, link github for normal users
-
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -17,11 +15,13 @@ import { drawerWidth, Main, AppBar, DrawerHeader } from '../../utils/Navbar';
 import Tasklist from '../Taskview/TaskList';
 import ProjectList from './ProjectList';
 import ProfileIcon from './Profile';
+import Homepage from '../Taskview/Homepage';
 
-export default function Navbar({manageAuth, credentials}) {
+export default function Navbar({ manageAuth, credentials }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [project, LoadData] = React.useState()
+  const [project, LoadData] = React.useState(null)
+  const [projectList, setProjects] = React.useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -35,7 +35,7 @@ export default function Navbar({manageAuth, credentials}) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Box sx={{display:'flex', justifyContent:'space-between'}}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Toolbar>
             <IconButton
               color="inherit"
@@ -56,12 +56,12 @@ export default function Navbar({manageAuth, credentials}) {
           <ProfileIcon credentials={credentials} logoutCallback={manageAuth} />
         </Box>
       </AppBar>
-      <Drawer
+      <Drawer //TODO: Increase size of drawer
         sx={{
-          width: drawerWidth,
+          width: 240,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: 240,
             boxSizing: 'border-box',
           },
         }}
@@ -70,17 +70,20 @@ export default function Navbar({manageAuth, credentials}) {
         open={open}
       >
         <DrawerHeader>
-          <p style={{ position: 'absolute', left: 0 }}>hello</p>
+          <p style={{ position: 'absolute', left: 0 }}></p>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <ProjectList setProject={LoadData} />
+        <ProjectList setProject={LoadData} setProjects={setProjects} projectList={projectList} />
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        <Tasklist project={project} />
+        {project ?
+          <Tasklist project={project} /> :
+          <Homepage credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth}/>
+        }
       </Main>
     </Box>
   );
