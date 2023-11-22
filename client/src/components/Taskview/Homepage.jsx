@@ -5,6 +5,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { FixedSizeList } from 'react-window';
+import CircularProgress from "@mui/material/CircularProgress";
 import AddIcon from '@mui/icons-material/Add'
 import { getReposList, getProjects } from '../../services/projects';
 import CreateProjectForm from '../Navbar/createProjectForm';
@@ -23,7 +24,7 @@ async function githubList() {
     }))
 }
 
-export default function Homepage({logoutCallback, credentials, refreshProjectList, openDrawer }) {
+export default function Homepage({ logoutCallback, credentials, refreshProjectList, openDrawer }) {
     const [formOpen, setForm] = useState(false);
     const [githubProjects, setGithubList] = useState([]);
     const [ref, refresh] = useState(0)
@@ -45,18 +46,18 @@ export default function Homepage({logoutCallback, credentials, refreshProjectLis
         const { index, style } = props;
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
-                    <GitHubIcon style={{ marginLeft: 0, marginRight: 10 }} />
-                    <ListItemText style={{ marginLeft: 2 }} primary={githubProjects[index].name} />
-                    <IconButton sx={{ position: 'absolute', right: 30 }} onClick={() => window.open(githubProjects[index].link)}>
-                        <OpenInNewIcon  color='text.secondary' />
-                    </IconButton>
-                    <IconButton sx={{ position: 'absolute', right:3 }} onClick={ async () => {
-                    refreshProjectList(prevList=>[...prevList, {projectName: githubProjects[index].name, repoLink: githubProjects[index].link, provider: 'github'}])
+                <GitHubIcon style={{ marginLeft: 0, marginRight: 10 }} />
+                <ListItemText style={{ marginLeft: 2 }} primary={githubProjects[index].name} />
+                <IconButton sx={{ position: 'absolute', right: 30 }} onClick={() => window.open(githubProjects[index].link)}>
+                    <OpenInNewIcon color='text.secondary' />
+                </IconButton>
+                <IconButton sx={{ position: 'absolute', right: 3 }} onClick={async () => {
+                    refreshProjectList(prevList => [...prevList, { projectName: githubProjects[index].name, repoLink: githubProjects[index].link, provider: 'github' }])
                     refresh(1)
                     await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
                 }} disabled={githubProjects[index].alreadyCreated}>
-                        <AddIcon  color={!githubProjects[index].alreadyCreated? 'primary' : 'text.secondary'} />
-                    </IconButton>
+                    <AddIcon color={!githubProjects[index].alreadyCreated ? 'primary' : 'text.secondary'} />
+                </IconButton>
             </ListItem>
         );
     }
@@ -110,18 +111,20 @@ export default function Homepage({logoutCallback, credentials, refreshProjectLis
                         </Grid>
                         <Grid item xs={12} sm={6} padding={0}>
                             <Card sx={{ p: 1, pb: 0 }}>
-                                (// BUG: Add loading screen for this card)
+
                                 <CardContent sx={{ '&.MuiCardContent-root:last-child': { pb: 0 }, mb: 0 }}>
                                     <Typography variant="h5">Repositories</Typography>
                                     <Divider sx={{ my: 3, mb: 1 }} />
-                                    <Box padding={0}>
-                                        <FixedSizeList
-                                            height={Math.min(githubProjects.length * 50, 250)}
-                                            itemSize={46}
-                                            itemCount={githubProjects.length}
-                                            overscanCount={5}
-                                        > {renderRow}
-                                        </FixedSizeList>
+                                    <Box padding={0} sx={{textAlign:'center'}}>
+                                        {githubProjects.length ?
+                                            <FixedSizeList
+                                                height={Math.min(githubProjects.length * 50, 250)}
+                                                itemSize={46}
+                                                itemCount={githubProjects.length}
+                                                overscanCount={5}
+                                            > {renderRow}
+                                            </FixedSizeList> :
+                                            <CircularProgress sx={{my:12.7}} disableShrink/>}
                                     </Box>
                                 </CardContent>
                             </Card>
