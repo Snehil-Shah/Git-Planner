@@ -1,4 +1,4 @@
-export async function submitCreateProjectForm(projectName, provider, repoLink){
+export async function createProject(projectName, provider, repoLink){
     const body = {projectName: projectName, provider: provider}
     if(repoLink){
         body.repoLink = repoLink;

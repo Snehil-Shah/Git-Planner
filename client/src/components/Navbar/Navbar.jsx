@@ -7,11 +7,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import { Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { drawerWidth, Main, AppBar, DrawerHeader } from '../../utils/Navbar';
+import { Main, AppBar, DrawerHeader } from '../../utils/Navbar';
 import Tasklist from '../Taskview/TaskList';
 import ProjectList from './ProjectList';
 import ProfileIcon from './Profile';
@@ -47,7 +49,7 @@ export default function Navbar({ manageAuth, credentials }) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Git-Planner
+              {project? project.projectName:'Git-Planner'}
             </Typography>
             {project && project.provider == 'github' ? <IconButton color="inherit" variant='text' onClick={
               () => { window.open(project.repoLink) }
@@ -56,7 +58,7 @@ export default function Navbar({ manageAuth, credentials }) {
           <ProfileIcon credentials={credentials} logoutCallback={manageAuth} />
         </Box>
       </AppBar>
-      <Drawer //TODO: Increase size of drawer
+      <Drawer
         sx={{
           width: 240,
           flexShrink: 0,
@@ -70,19 +72,19 @@ export default function Navbar({ manageAuth, credentials }) {
         open={open}
       >
         <DrawerHeader>
-          <p style={{ position: 'absolute', left: 0 }}></p>
+          <Button variant='text' sx={{position: 'absolute', left:13, color:'text.secondary'}} disabled={!project} onClick={()=> LoadData(null)}><HomeIcon fontSize='medium' sx={{mr:0.5}} /><Typography fontSize='large' variant='button'>Home</Typography></Button>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
-        <Divider />
-        <ProjectList setProject={LoadData} setProjects={setProjects} projectList={projectList} />
+        <Divider sx={{mb:1}} />
+        <ProjectList project={project} setProject={LoadData} setProjects={setProjects} projectList={projectList} />
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
         {project ?
           <Tasklist project={project} /> :
-          <Homepage credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth}/>
+          <Homepage credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth} />
         }
       </Main>
     </Box>

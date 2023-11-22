@@ -13,7 +13,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { getReposList, getProjects, submitCreateProjectForm } from '../../services/projects';
+import { getReposList, getProjects, createProject } from '../../services/projects';
 
 async function githubList(){
     const repoList = await getReposList();
@@ -26,8 +26,7 @@ async function githubList(){
     }))
 }
 
-export default function CreateProjectForm({ refreshProjectList }) {
-    const [formOpen, setForm] = useState(false);
+export default function CreateProjectForm({refreshProjectList, formOpen, handleFormClose }) {
     const [projectName, setProjectName] = useState('');
     const [githubProjects, setGithubList] = useState([]);
 
@@ -35,22 +34,14 @@ export default function CreateProjectForm({ refreshProjectList }) {
         githubList().then((list)=> {setGithubList(list);});
     }, [formOpen])
 
-    const handleFormOpen = () => {
-        setForm(true);
-    };
-
-    const handleFormClose = () => {
-        setForm(false);
-    };
-
     function renderRow(props) {
         const { index, style } = props;
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
                 <ListItemButton onClick={!(githubProjects[index].alreadyCreated) ? async () => {
                     refreshProjectList(prevList=>[...prevList, {projectName: githubProjects[index].name, repoLink: githubProjects[index].link, provider: 'github'}])
-                    setForm(false);
-                    await submitCreateProjectForm(githubProjects[index].name, 'github', githubProjects[index].link);
+                    handleFormClose();
+                    await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
                 } : null} disabled={githubProjects[index].alreadyCreated}>
                     <GitHubIcon style={{ marginLeft: 1.5, marginRight: 10 }} />
                     <ListItemText style={{ marginLeft: 2 }} primary={githubProjects[index].name} />
@@ -62,11 +53,6 @@ export default function CreateProjectForm({ refreshProjectList }) {
 
     return (
         <>
-            <Button variant="contained" disableElevation style={{
-                position: "relative", margin: "5%"
-            }} onClick={handleFormOpen}>
-                <AddIcon />Project
-            </Button>
             <Dialog open={formOpen} onClose={handleFormClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth={true}>
                 <DialogTitle id="form-dialog-title">Create Project</DialogTitle>
                 <IconButton
@@ -95,8 +81,8 @@ export default function CreateProjectForm({ refreshProjectList }) {
                 <Box sx={{ mx: 3 }}>
                     <Button onClick={async () => {
                         refreshProjectList(prevList=>[...prevList, {projectName: projectName, provider: 'user'}])
-                        setForm(false);
-                        await submitCreateProjectForm(projectName, 'user');
+                        handleFormClose();
+                        await createProject(projectName, 'user');
                     }
                     } color="primary" variant='contained' fullWidth disableElevation sx={{ mb: 2 }}>
                         Create

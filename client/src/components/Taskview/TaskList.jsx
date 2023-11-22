@@ -20,7 +20,7 @@ export default function TaskList({ project }) {
 
   React.useEffect(() => { if (project){
     getTasks(project.id).then((projectTasks) => setTasks(projectTasks)) }}, [project]);
-  // HACK: Make this a separate item component and organize them in some folder like utils or smth
+  // HACK: Make this a separate item component and organize them in some folder like utils or smth, also make folder for functions
   let htmlList = taskList.map((task, index) => (
     <Accordion key={index}
     sx={{ display: 'flex', flexDirection: 'column', px: 1 , textDecoration: task.completed? 'line-through': 'none', color: task.completed? 'text.secondary':'none', opacity: task.completed? 0.75 : 1}}>
