@@ -64,8 +64,8 @@ export default function Homepage({ logoutCallback, credentials, refreshProjectLi
 
     return (
         <Box paddingY='40px' display={"flex"} flexDirection={'column'}>
-            <Container maxWidth='lg' sx={{ mx: 30, mb: 5 }}>
-                <Typography variant="h2" color="text.primary">{`Welcome, ${credentials.name.split(' ')[0]} !`}</Typography>
+            <Container maxWidth='lg' sx={{ mb: 5 }}>
+                <Typography variant="h2" color="text.primary" sx={{ml:20}}>{`Welcome, ${credentials.name.split(' ')[0]} !`}</Typography>
             </Container>
             <Divider variant='middle' sx={{ width: '65%', alignSelf: 'center' }} />
             <Container maxWidth='md'>
@@ -91,13 +91,13 @@ export default function Homepage({ logoutCallback, credentials, refreshProjectLi
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <GitHubIcon fontSize='small' sx={{ mr: 1 }} />
-                                        <Link href={'#'} color='text.primary' onClick={() => { window.open(credentials.link) }} >
+                                        <Link href={credentials.link} color='text.primary' onClick={() => { window.open(credentials.link) }} >
                                             <Typography variant='button' fontSize={17}>My Github</Typography>
                                         </Link>
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
-                                        <Link href={'#'} color='text.primary' onClick={async () => {
+                                        <Link href={'/logout'} color='text.primary' onClick={async () => {
                                             await logout()
                                             logoutCallback(null)
                                         }
@@ -124,7 +124,7 @@ export default function Homepage({ logoutCallback, credentials, refreshProjectLi
                                                 overscanCount={5}
                                             > {renderRow}
                                             </FixedSizeList> :
-                                            <CircularProgress sx={{my:12.7}} disableShrink/>}
+                                            <CircularProgress sx={{my:13.7, color:'text.secondary'}} disableShrink size={25} />}
                                     </Box>
                                 </CardContent>
                             </Card>

@@ -44,7 +44,7 @@ function ProfileIcon({ logoutCallback, credentials }) {
       >
         <Box paddingX='20px' paddingY='10px' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Typography variant='h6' noWrap padding='0' color='text.primary' sx={{ mb: 0.2 }}>{credentials.name}</Typography>
-          <Link href={'#'} onClick={(evt) => {
+          <Link href={credentials.link} onClick={(evt) => {
             evt.preventDefault()
             window.open(credentials.link)
           }} color='text.secondary' noWrap>
