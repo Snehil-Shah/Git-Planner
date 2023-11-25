@@ -18,6 +18,18 @@ import Tasklist from '../Taskview/TaskList';
 import ProjectList from './ProjectList';
 import ProfileIcon from './Profile';
 import Homepage from '../Taskview/Homepage';
+import { getReposList, getProjects } from '../../services/projects';
+
+async function githubList() {
+  const repoList = await getReposList();
+  const projectList = await getProjects();
+  const projectNames = projectList.map(project => project.projectName);
+  return repoList.map((gitProject) => ({
+      name: gitProject.name,
+      link: gitProject.repoLink,
+      alreadyCreated: projectNames.includes(gitProject.name)
+  }))
+}
 
 export default function Navbar({ manageAuth, credentials }) {
   const theme = useTheme();
@@ -32,6 +44,13 @@ export default function Navbar({ manageAuth, credentials }) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  // github
+  const [githubProjects, setGithubList] = React.useState([]);
+
+    React.useEffect(() => {
+        githubList().then((list) => { setGithubList(list); });
+    }, [projectList])
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -52,7 +71,7 @@ export default function Navbar({ manageAuth, credentials }) {
               {project? project.projectName:'Git-Planner'}
             </Typography>
             {project && project.provider == 'github' ? <IconButton color="inherit" variant='text' onClick={
-              () => { window.open(project.repoLink) }
+              () => {window.open(project.repoLink) }
             }><OpenInNewIcon /></IconButton> : null}
           </Toolbar>
           <ProfileIcon credentials={credentials} logoutCallback={manageAuth} />
@@ -84,7 +103,7 @@ export default function Navbar({ manageAuth, credentials }) {
         <DrawerHeader />
         {project ?
           <Tasklist project={project} /> :
-          <Homepage credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth} setProject={LoadData} />
+          <Homepage githubProjects={githubProjects} projectList={projectList} credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth} setProject={LoadData} />
         }
       </Main>
     </Box>

@@ -26,13 +26,13 @@ async function githubList(){
     }))
 }
 
-export default function CreateProjectForm({setProject, refreshProjectList, formOpen, handleFormClose }) {
+export default function CreateProjectForm({setProject, refreshProjectList, formOpen, handleFormClose, projectList }) {
     const [projectName, setProjectName] = useState('');
     const [githubProjects, setGithubList] = useState([]);
 
     useEffect(() => {
         githubList().then((list)=> {setGithubList(list);});
-    }, [formOpen])
+    }, [projectList])
 
     function renderRow(props) {
         const { index, style } = props;

@@ -30,6 +30,7 @@ module.exports.deleteProject = async(req,res) => {
         const {projectId} = req.params;
         await User.findByIdAndUpdate(req.user.id,{$pull:{projects: projectId}});
         await Project.findByIdAndDelete(projectId)
+        res.send('Deleted Project')
     } catch(err){
         res.status(500).send('Internal server error');
     }

@@ -10,13 +10,17 @@ export async function createProject(projectName, provider, repoLink){
         body: JSON.stringify(body)
     })
     const project = await response.json();
-    return {id: project._id,projectName: project.name, provider:project.provider};
+    return {id: project._id,projectName: project.name, provider:project.provider, repoLink:project.repoLink};
 }
 
 export async function getProjects() {
     const response = await fetch('http://localhost:3000/projects', {credentials: 'include'});
     const projectList = await response.json();
     return projectList;   // {id, projectName, provider, repoLink}
+}
+
+export async function deleteProject(projectId){
+    await fetch(`http://localhost:3000/projects/${projectId}`, {method:'DELETE',credentials:'include'});
 }
 
 export async function getReposList(){

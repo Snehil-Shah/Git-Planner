@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ListItem, ListItemText, Link, Divider, Grid, Box, Container, Typography, Card, CardContent, IconButton } from "@mui/material"
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -7,33 +7,13 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { FixedSizeList } from 'react-window';
 import CircularProgress from "@mui/material/CircularProgress";
 import AddIcon from '@mui/icons-material/Add'
-import { getReposList, getProjects } from '../../services/projects';
 import CreateProjectForm from '../Navbar/createProjectForm';
 import { logout } from "../../services/users";
 import { createProject } from "../../services/projects";
 //TODO: Organize imports
 
-async function githubList() {
-    const repoList = await getReposList();
-    const projectList = await getProjects();
-    const projectNames = projectList.map(project => project.projectName);
-    return repoList.map((gitProject) => ({
-        name: gitProject.name,
-        link: gitProject.repoLink,
-        alreadyCreated: projectNames.includes(gitProject.name)
-    }))
-}
-
-export default function Homepage({ setProject, logoutCallback, credentials, refreshProjectList, openDrawer }) {
+export default function Homepage({ githubProjects, setProject, logoutCallback, credentials, refreshProjectList, openDrawer, projectList }) {
     const [formOpen, setForm] = useState(false);
-    const [githubProjects, setGithubList] = useState([]);
-    const [ref, refresh] = useState(0)
-
-    useEffect(() => {
-        refresh(0)
-        githubList().then((list) => { setGithubList(list); });
-    }, [ref])
-
     const handleFormOpen = () => {
         setForm(true);
     };
@@ -52,9 +32,9 @@ export default function Homepage({ setProject, logoutCallback, credentials, refr
                     <OpenInNewIcon color='text.secondary' />
                 </IconButton>
                 <IconButton sx={{ position: 'absolute', right: 3 }} onClick={async () => {
-                    refreshProjectList(prevList => [...prevList, { projectName: githubProjects[index].name, repoLink: githubProjects[index].link, provider: 'github' }])
-                    refresh(1)
-                    await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
+                    const newProject = await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
+                    refreshProjectList(prevList => [...prevList, newProject])
+                    setProject(newProject)
                 }} disabled={githubProjects[index].alreadyCreated}>
                     <AddIcon color={!githubProjects[index].alreadyCreated ? 'primary' : 'text.secondary'} />
                 </IconButton>
@@ -65,7 +45,7 @@ export default function Homepage({ setProject, logoutCallback, credentials, refr
     return (
         <Box paddingY='40px' display={"flex"} flexDirection={'column'}>
             <Container maxWidth='lg' sx={{ mb: 5 }}>
-                <Typography variant="h2" color="text.primary" sx={{mx:22}}>{`Welcome, ${credentials.name.split(' ')[0]} !`}</Typography>
+                <Typography variant="h2" color="text.primary" sx={{ mx: 22 }}>{`Welcome, ${credentials.name.split(' ')[0]} !`}</Typography>
             </Container>
             <Divider variant='middle' sx={{ width: '65%', alignSelf: 'center' }} />
             <Container maxWidth='md'>
@@ -81,7 +61,7 @@ export default function Homepage({ setProject, logoutCallback, credentials, refr
                                         <Link href={'#'} onClick={handleFormOpen} color='text.primary'>
                                             <Typography variant='button' fontSize={17}>New Project</Typography>
                                         </Link>
-                                        <CreateProjectForm refreshProjectList={refreshProjectList} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
+                                        <CreateProjectForm projectList={projectList} refreshProjectList={refreshProjectList} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <OpenInNewIcon fontSize="small" sx={{ mr: 1 }} />
@@ -115,7 +95,7 @@ export default function Homepage({ setProject, logoutCallback, credentials, refr
                                 <CardContent sx={{ '&.MuiCardContent-root:last-child': { pb: 0 }, mb: 0 }}>
                                     <Typography variant="h5">Repositories</Typography>
                                     <Divider sx={{ my: 3, mb: 1 }} />
-                                    <Box padding={0} sx={{textAlign:'center'}}>
+                                    <Box padding={0} sx={{ textAlign: 'center' }}>
                                         {githubProjects.length ?
                                             <FixedSizeList
                                                 height={Math.min(githubProjects.length * 50, 250)}
@@ -124,7 +104,7 @@ export default function Homepage({ setProject, logoutCallback, credentials, refr
                                                 overscanCount={5}
                                             > {renderRow}
                                             </FixedSizeList> :
-                                            <CircularProgress sx={{my:13.7, color:'text.secondary'}} disableShrink size={25} />}
+                                            <CircularProgress sx={{ my: 13.7, color: 'text.secondary' }} disableShrink size={25} />}
                                     </Box>
                                 </CardContent>
                             </Card>
