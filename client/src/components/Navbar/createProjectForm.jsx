@@ -26,7 +26,7 @@ async function githubList(){
     }))
 }
 
-export default function CreateProjectForm({refreshProjectList, formOpen, handleFormClose }) {
+export default function CreateProjectForm({setProject, refreshProjectList, formOpen, handleFormClose }) {
     const [projectName, setProjectName] = useState('');
     const [githubProjects, setGithubList] = useState([]);
 
@@ -39,12 +39,13 @@ export default function CreateProjectForm({refreshProjectList, formOpen, handleF
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
                 <ListItemButton onClick={!(githubProjects[index].alreadyCreated) ? async () => {
-                    refreshProjectList(prevList=>[...prevList, {projectName: githubProjects[index].name, repoLink: githubProjects[index].link, provider: 'github'}])
+                    const newProject =  await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
+                    refreshProjectList(prevList=>[...prevList, newProject])
+                    setProject(newProject)
                     handleFormClose();
-                    await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
                 } : null} disabled={githubProjects[index].alreadyCreated}>
                     <GitHubIcon style={{ marginLeft: 1.5, marginRight: 10 }} />
-                    <ListItemText style={{ marginLeft: 2 }} primary={githubProjects[index].name} />
+                    <ListItemText style={{ marginLeft: 2, paddingRight: 25 }} primary={githubProjects[index].name} />
                     {!githubProjects[index].alreadyCreated ? <AddIcon sx={{ position: 'absolute', right: 12 }} color='primary' /> : null}
                 </ListItemButton>
             </ListItem>
@@ -80,9 +81,11 @@ export default function CreateProjectForm({refreshProjectList, formOpen, handleF
                 </DialogContent>
                 <Box sx={{ mx: 3 }}>
                     <Button onClick={async () => {
-                        refreshProjectList(prevList=>[...prevList, {projectName: projectName, provider: 'user'}])
+                        // TODO: Add backdrop here
+                        const newProject =  await createProject(projectName, 'user');
+                        refreshProjectList(prevList=>[...prevList, newProject])
+                        setProject(newProject)
                         handleFormClose();
-                        await createProject(projectName, 'user');
                     }
                     } color="primary" variant='contained' fullWidth disableElevation sx={{ mb: 2 }}>
                         Create

@@ -3,12 +3,14 @@ export async function createProject(projectName, provider, repoLink){
     if(repoLink){
         body.repoLink = repoLink;
     }
-    await fetch('http://localhost:3000/projects',{
+    const response = await fetch('http://localhost:3000/projects',{
         method: 'POST',
         credentials: 'include',
         headers:{ 'Content-Type': 'application/json'},
         body: JSON.stringify(body)
     })
+    const project = await response.json();
+    return {id: project._id,projectName: project.name, provider:project.provider};
 }
 
 export async function getProjects() {

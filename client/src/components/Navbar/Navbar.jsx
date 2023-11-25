@@ -84,7 +84,7 @@ export default function Navbar({ manageAuth, credentials }) {
         <DrawerHeader />
         {project ?
           <Tasklist project={project} /> :
-          <Homepage credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth} />
+          <Homepage credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth} setProject={LoadData} />
         }
       </Main>
     </Box>

@@ -49,7 +49,7 @@ export default function ProjectList({ project, projectList, setProjects, setProj
             }} onClick={handleFormOpen}>
                 <AddIcon />Project
             </Button>
-            <CreateProjectForm refreshProjectList={setProjects} formOpen={formOpen} handleFormClose={handleFormClose} openProject={setProject} />
+            <CreateProjectForm refreshProjectList={setProjects} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
             <List component="nav" aria-label="main mailbox folders">
                 {htmlList}
             </List>

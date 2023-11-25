@@ -24,7 +24,7 @@ async function githubList() {
     }))
 }
 
-export default function Homepage({ logoutCallback, credentials, refreshProjectList, openDrawer }) {
+export default function Homepage({ setProject, logoutCallback, credentials, refreshProjectList, openDrawer }) {
     const [formOpen, setForm] = useState(false);
     const [githubProjects, setGithubList] = useState([]);
     const [ref, refresh] = useState(0)
@@ -47,7 +47,7 @@ export default function Homepage({ logoutCallback, credentials, refreshProjectLi
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
                 <GitHubIcon style={{ marginLeft: 0, marginRight: 10 }} />
-                <ListItemText style={{ marginLeft: 2 }} primary={githubProjects[index].name} />
+                <ListItemText style={{ marginLeft: 2, paddingRight: 67 }} primary={githubProjects[index].name} />
                 <IconButton sx={{ position: 'absolute', right: 30 }} onClick={() => window.open(githubProjects[index].link)}>
                     <OpenInNewIcon color='text.secondary' />
                 </IconButton>
@@ -65,7 +65,7 @@ export default function Homepage({ logoutCallback, credentials, refreshProjectLi
     return (
         <Box paddingY='40px' display={"flex"} flexDirection={'column'}>
             <Container maxWidth='lg' sx={{ mb: 5 }}>
-                <Typography variant="h2" color="text.primary" sx={{ml:20}}>{`Welcome, ${credentials.name.split(' ')[0]} !`}</Typography>
+                <Typography variant="h2" color="text.primary" sx={{mx:22}}>{`Welcome, ${credentials.name.split(' ')[0]} !`}</Typography>
             </Container>
             <Divider variant='middle' sx={{ width: '65%', alignSelf: 'center' }} />
             <Container maxWidth='md'>
@@ -81,7 +81,7 @@ export default function Homepage({ logoutCallback, credentials, refreshProjectLi
                                         <Link href={'#'} onClick={handleFormOpen} color='text.primary'>
                                             <Typography variant='button' fontSize={17}>New Project</Typography>
                                         </Link>
-                                        <CreateProjectForm refreshProjectList={refreshProjectList} formOpen={formOpen} handleFormClose={handleFormClose} />
+                                        <CreateProjectForm refreshProjectList={refreshProjectList} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <OpenInNewIcon fontSize="small" sx={{ mr: 1 }} />
