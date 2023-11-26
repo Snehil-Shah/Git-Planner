@@ -53,9 +53,9 @@ export default function Navbar({ manageAuth, credentials }) {
     }, [projectList])
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height:'100vh' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{backgroundColor:'#24292f'}} elevation={4}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Toolbar>
             <IconButton
@@ -84,13 +84,14 @@ export default function Navbar({ manageAuth, credentials }) {
           '& .MuiDrawer-paper': {
             width: 240,
             boxSizing: 'border-box',
-          },
+          }
         }}
         variant="persistent"
         anchor="left"
         open={open}
+        elevation={20}
       >
-        <DrawerHeader>
+        <DrawerHeader sx={{backgroundColor:'#f6f8fa'}}>
           <Button variant='text' sx={{position: 'absolute', left:13, color:'text.secondary'}} disabled={!project} onClick={()=> LoadData(null)}><HomeIcon fontSize='medium' sx={{mr:0.5}} /><Typography fontSize='large' variant='button'>Home</Typography></Button>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}

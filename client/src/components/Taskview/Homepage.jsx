@@ -29,14 +29,14 @@ export default function Homepage({ githubProjects, setProject, logoutCallback, c
                 <GitHubIcon style={{ marginLeft: 0, marginRight: 10 }} />
                 <ListItemText style={{ marginLeft: 2, paddingRight: 67 }} primary={githubProjects[index].name} />
                 <IconButton sx={{ position: 'absolute', right: 30 }} onClick={() => window.open(githubProjects[index].link)}>
-                    <OpenInNewIcon color='text.secondary' />
+                    <OpenInNewIcon color='info' />
                 </IconButton>
                 <IconButton sx={{ position: 'absolute', right: 3 }} onClick={async () => {
                     const newProject = await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
                     refreshProjectList(prevList => [...prevList, newProject])
                     setProject(newProject)
-                }} disabled={githubProjects[index].alreadyCreated}>
-                    <AddIcon color={!githubProjects[index].alreadyCreated ? 'primary' : 'text.secondary'} />
+                }} disabled={githubProjects[index].alreadyCreated} color='success'>
+                    <AddIcon sx={!githubProjects[index].alreadyCreated ? {color:'#1f883d'} : null}/>
                 </IconButton>
             </ListItem>
         );
@@ -50,9 +50,9 @@ export default function Homepage({ githubProjects, setProject, logoutCallback, c
             <Divider variant='middle' sx={{ width: '65%', alignSelf: 'center' }} />
             <Container maxWidth='md'>
                 <Box mt={7}>
-                    <Grid container spacing={4}>
+                    <Grid container spacing={5}>
                         <Grid item xs={12} sm={6}>
-                            <Card sx={{ p: 2 }}>
+                            <Card sx={{ p: 2 }} elevation={3}>
                                 <CardContent>
                                     <Typography variant="h5">Start</Typography>
                                     <Divider sx={{ my: 3, mb: 5 }} />
@@ -90,12 +90,12 @@ export default function Homepage({ githubProjects, setProject, logoutCallback, c
                             </Card>
                         </Grid>
                         <Grid item xs={12} sm={6} padding={0}>
-                            <Card sx={{ p: 1, pb: 0 }}>
+                            <Card sx={{ p: 1, pb: 0 }} elevation={3}>
 
                                 <CardContent sx={{ '&.MuiCardContent-root:last-child': { pb: 0 }, mb: 0 }}>
                                     <Typography variant="h5">Repositories</Typography>
                                     <Divider sx={{ my: 3, mb: 1 }} />
-                                    <Box padding={0} sx={{ textAlign: 'center' }}>
+                                    <Box padding={0} paddingLeft={1} sx={{ textAlign: 'center' }}>
                                         {githubProjects.length ?
                                             <FixedSizeList
                                                 height={Math.min(githubProjects.length * 50, 250)}

@@ -23,7 +23,7 @@ function ProfileIcon({ logoutCallback, credentials }) {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Profile">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2.5, mt: 1.5 }}>
-          <Avatar src={credentials.avatar} />
+          <Avatar src={credentials.avatar}  sx={{boxShadow:'rgba(31, 35, 40, 0.15) 0px 0px 0px 1px', border:'1.5px solid #f6f8fa'}} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -54,7 +54,7 @@ function ProfileIcon({ logoutCallback, credentials }) {
             await logout()
             logoutCallback(null)
           }
-          } color="error" sx={{ mt: 2, mb: 0.5 }}>
+          } color="error" sx={{ mt: 2, mb: 0.5 }} disableElevation>
             Logout
           </Button>
         </Box>

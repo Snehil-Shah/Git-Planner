@@ -30,7 +30,7 @@ export default function DeleteMenu({setProject,project, projectToDelete, menuPos
                 anchorReference="anchorPosition"
                 anchorPosition={menuPosition}
             >
-                <MenuItem onClick={()=>{handleClickOpen(); setMenuPosition(null);}}><Delete color='error' fontSize='small' sx={{mr: 0.4, ml:0}}/><Typography variant="button" color='error' sx={{mr:0.2}}>Project</Typography></MenuItem>
+                <MenuItem onClick={()=>{handleClickOpen(); setMenuPosition(null);}}><Delete color='error' fontSize='small' sx={{mr: 0.4, ml:0}}/><Typography variant="button" color='error' sx={{mr:0.5}}>Project</Typography></MenuItem>
             </Menu>
             {projectToDelete? <Dialog
                 open={open}

@@ -46,7 +46,7 @@ export default function CreateProjectForm({setProject, refreshProjectList, formO
                 } : null} disabled={githubProjects[index].alreadyCreated}>
                     <GitHubIcon style={{ marginLeft: 1.5, marginRight: 10 }} />
                     <ListItemText style={{ marginLeft: 2, paddingRight: 25 }} primary={githubProjects[index].name} />
-                    {!githubProjects[index].alreadyCreated ? <AddIcon sx={{ position: 'absolute', right: 12 }} color='primary' /> : null}
+                    {!githubProjects[index].alreadyCreated ? <AddIcon sx={{ position: 'absolute', right: 12, color:'#1f883d' }} /> : null}
                 </ListItemButton>
             </ListItem>
         );
@@ -87,7 +87,7 @@ export default function CreateProjectForm({setProject, refreshProjectList, formO
                         setProject(newProject)
                         handleFormClose();
                     }
-                    } color="primary" variant='contained' fullWidth disableElevation sx={{ mb: 2 }}>
+                    } variant='contained' color='success' fullWidth disableElevation sx={{ mb: 2, backgroundColor:'#1f883d' }}>
                         Create
                     </Button>
                 </Box>

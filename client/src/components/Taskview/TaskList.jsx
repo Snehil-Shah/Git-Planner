@@ -23,13 +23,14 @@ export default function TaskList({ project }) {
   // HACK: Make this a separate item component and organize them in some folder like utils or smth, also make folder for functions
   let htmlList = taskList.map((task, index) => (
     <Accordion key={index}
-    sx={{ display: 'flex', flexDirection: 'column', px: 1 , textDecoration: task.completed? 'line-through': 'none', color: task.completed? 'text.secondary':'none', opacity: task.completed? 0.75 : 1}}>
+    sx={{ display: 'flex', flexDirection: 'column', px: 1 , textDecoration: task.completed? 'line-through': 'none', color: task.completed? 'text.secondary':'none', opacity: task.completed? 0.75 : 1}}
+    elevation={2} >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <FormControlLabel control={<Checkbox checked={task.completed || false} onChange={async (evt)=>{
+        <FormControlLabel control={<Checkbox color='primary' checked={task.completed || false} onChange={async (evt)=>{
           // TODO: Add exception handling for all async operations and maybe manage an error state to show user error messages
           setTasks(prevList=>(prevList.map(t=> t._id == task._id ? {...t,completed: evt.target.checked} : t)));
           await editTask(task._id, {completed: evt.target.checked});
@@ -38,14 +39,15 @@ export default function TaskList({ project }) {
         label={
           <Typography variant='body1' fontSize={18}>{task.task}</Typography>
         } />
-        {task.githubIssue ? <Button style={{ position: 'absolute', right: 70, bottom: 15 }} onClick={(evt) => {
+        {task.githubIssue ? <Button color={task.completed? 'secondary': 'success'} style={{ position: 'absolute', right: 70, bottom: 15 }} onClick={(evt) => {
           evt.stopPropagation()
           window.open(task.githubIssue.link)
-        }}><AdjustIcon sx={{ mr: 0.1 , color: task.completed? 'text.secondary': 'primary'}} /><Typography color={task.completed? 'text.secondary': 'primary'} variant='body1'>{task.githubIssue.name.split(':')[0]}</Typography></Button> : null}
+        }}><AdjustIcon sx={{ mr: 0.1 , color: task.completed? null: '#1f883d', fontWeight:'bolder'}} />
+        <Typography color={task.completed? null: '#1f883d'} sx={{fontWeight:'bold'}} variant='body1'>{task.githubIssue.name.split(':')[0]}</Typography></Button> : null}
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 0 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          {task.githubIssue && task.githubIssue.name ? <Typography variant='subtitle2' sx={{ color: 'text.secondary' }}>
+          {task.githubIssue && task.githubIssue.name ? <Typography variant='subtitle2' sx={{ color: 'text.secondary', fontWeight:'bold' }}>
             {task.githubIssue.name}
           </Typography> : null}
           {task.description ?
@@ -67,7 +69,7 @@ export default function TaskList({ project }) {
   ))
   return (
     <Box sx={{ width: '100%' }}>
-      <Stack spacing={1}>
+      <Stack spacing={1.4}>
         {htmlList}
       </Stack>
       <CreateTaskForm project={project} refreshTaskList={setTasks} />

@@ -49,6 +49,14 @@ export default function ProjectList({ project, projectList, setProjects, setProj
                         left: event.clientX,
                     });
                 }}
+                sx={{
+                    '&.Mui-selected': {
+                      backgroundColor: '#f6f8fa',
+                    },
+                    '&.Mui-selected:hover': {
+                        backgroundColor: 'rgba(9, 7, 5, 0.04)'
+                      }
+                  }}
             >
                 {project.provider == 'github' ? <GitHubIcon style={{ marginLeft: 2, marginRight: 8 }} /> : <TaskAltIcon style={{ marginLeft: 2, marginRight: 8 }} fontSize='medium' />}
                 <ListItemText primary={project.projectName} />
@@ -59,7 +67,7 @@ export default function ProjectList({ project, projectList, setProjects, setProj
     return (
         <>
             <Button variant="contained" disableElevation style={{
-                position: "relative", margin: "5%"
+                position: "relative", margin: "5%", backgroundColor:'#1f883d'
             }} onClick={handleFormOpen}>
                 <AddIcon />Project
             </Button>

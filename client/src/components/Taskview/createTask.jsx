@@ -32,12 +32,13 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
         })
     }
     }, [formOpen, project])
-
+    // TODO: Form Validations
     return (
         <>
-            <Fab color="primary" aria-label="add" style={{ position: "fixed", right: "20px", bottom: "20px" }} onClick={handleFormOpen}>
+            <Fab size='large' aria-label="add" style={{ position: "fixed", right: "40px", bottom: "50px", backgroundColor:'#24292f', color:'#ffffff' }} onClick={handleFormOpen}>
                 <AddIcon />
             </Fab>
+
             <Dialog open={formOpen} onClose={handleFormClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth={true}>
                 <DialogTitle id="form-dialog-title">Add Todo</DialogTitle>
                 <DialogContent sx={{ px: 4 }}>
@@ -75,7 +76,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                     /> : null}
                 </DialogContent>
                 <DialogActions sx={{mb: 2, mr:3, mt:0, pt:0}}>
-                    <Button onClick={handleFormClose} color="primary">
+                    <Button onClick={handleFormClose} sx={{color: 'text.secondary'}}>
                         Cancel
                     </Button>
                     <Button onClick={async () => {
@@ -83,7 +84,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         setForm(false);
                         await createTask(project.id, formContent.task, formContent.description, formContent.githubIssue);
                     }
-                    } color="primary" variant='contained'>
+                    } sx={{backgroundColor:'#1f883d'}} color='success' variant='contained' disableElevation>
                         Add
                     </Button>
                 </DialogActions>

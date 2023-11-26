@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Box from '@mui/material/Box';
+import { CircularProgress } from '@mui/material';
 
 function Login() {
+  const [loading, setLoading] = useState(false)
   return (
     <>
       <Box
@@ -20,10 +23,12 @@ function Login() {
             Git-Planner
           </Typography>
           </Box>
-          <Box display='flex' justifyContent="center" alignItems='center'>
-          <Button variant="contained" href='http://localhost:3000/user/login/github'>
+          <Box display='flex' justifyContent="center" alignItems='center' paddingY={1}>
+          {!loading? <Button variant="contained" href='http://localhost:3000/user/login/github'
+          sx={{backgroundColor:'#24292f','&:hover': {backgroundColor: '#000000'}}} size='large'
+          onClick={()=>setLoading(true)}>
             Sign in with Github <GitHubIcon style={{ marginLeft: 8 }} />
-          </Button>
+          </Button> : <CircularProgress sx={{py:0.7,color: 'text.secondary' }} disableShrink size={30} />}
           </Box>
         </Box>
       </Box>

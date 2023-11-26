@@ -32,7 +32,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
 
     return (
         <>
-            <Button variant="outlined" size='small' color={task.completed? 'info':'secondary'} sx={{mr: 1, py: 0.75}} onClick={async () => {
+            <Button variant="outlined" size='small' color={task.completed? 'info':'primary'} sx={{mr: 1, py: 0.75}} onClick={async () => {
               handleFormOpen()
             }}>{<EditIcon fontSize='small' />}</Button>
             <Dialog open={formOpen} onClose={handleFormClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth={true}>
@@ -75,7 +75,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
                     /> : null}
                 </DialogContent>
                 <DialogActions sx={{mb: 2, mr:3, mt:0, pt:0}}>
-                    <Button onClick={handleFormClose} color="primary">
+                    <Button onClick={handleFormClose} sx={{color: 'text.secondary'}}>
                         Cancel
                     </Button>
                     <Button onClick={async () => {
@@ -83,7 +83,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
                         setForm(false);
                         await editTask(task['_id'], formContent);
                     }
-                    } color="primary" variant='contained'>
+                    } sx={{backgroundColor:'#1f883d'}} color="success" variant='contained'>
                         Save
                     </Button>
                 </DialogActions>
