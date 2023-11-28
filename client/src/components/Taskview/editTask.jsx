@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import {  editTask, getIssuesList } from '../../services/tasks';
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function EditTaskForm({ project,task, refreshTaskList }) {
+export default function EditTaskForm({setSuccessAlert, project,task, refreshTaskList }) {
 
     const [formOpen, setForm] = useState(false);
     const [formContent, setFormContent] = useState({name: task.task, description: task.description, githubIssue: task.githubIssue});
@@ -82,6 +82,7 @@ export default function EditTaskForm({ project,task, refreshTaskList }) {
                         refreshTaskList(prevTasks=>prevTasks.map(t=>t._id == task._id? {...t,...formContent} : t));
                         setForm(false);
                         await editTask(task['_id'], formContent);
+                        setSuccessAlert(true);
                     }
                     } sx={{backgroundColor:'#1f883d'}} color="success" variant='contained'>
                         Save

@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { deleteTask } from '../../services/tasks';
 
 
-export default function DeleteTaskForm({project, task, refreshTaskList}) {
+export default function DeleteTaskForm({setDeleteAlert, project, task, refreshTaskList}) {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -43,6 +43,7 @@ export default function DeleteTaskForm({project, task, refreshTaskList}) {
                         refreshTaskList(prevTasks=>prevTasks.filter((t)=>t._id != task._id))
                         handleClose()
                         await deleteTask(project.id, task['_id']);
+                        setDeleteAlert(true)
                     }} variant='contained' color='error' disableElevation>
                         Delete
                     </Button>

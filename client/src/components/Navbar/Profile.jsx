@@ -10,7 +10,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Button from '@mui/material/Button'
 import { logout } from '../../services/users';
 
-function ProfileIcon({ logoutCallback, credentials }) {
+function ProfileIcon({ setLogoutAlert, logoutCallback, credentials }) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -53,6 +53,7 @@ function ProfileIcon({ logoutCallback, credentials }) {
           <Button variant="contained" onClick={async () => {
             await logout()
             logoutCallback(null)
+            setLogoutAlert(true);
           }
           } color="error" sx={{ mt: 2, mb: 0.5 }} disableElevation>
             Logout

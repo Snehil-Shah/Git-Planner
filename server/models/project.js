@@ -27,7 +27,5 @@ projectSchema.pre('findOneAndDelete', async function (next) {
     next()
 })
 
-// TODO: Delete project
-
 module.exports = mongoose.model('Project', projectSchema);
 

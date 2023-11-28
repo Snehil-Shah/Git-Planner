@@ -82,7 +82,8 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                     <Button onClick={async () => {
                         refreshTaskList(prevList=> [...prevList, formContent])
                         setForm(false);
-                        await createTask(project.id, formContent.task, formContent.description, formContent.githubIssue);
+                        const newTask = await createTask(project.id, formContent.task, formContent.description, formContent.githubIssue);
+                        refreshTaskList(prevList=>prevList.map(t=>t.name == newTask.name && t.description == newTask.description ? {...t,...newTask} : t))
                     }
                     } sx={{backgroundColor:'#1f883d'}} color='success' variant='contained' disableElevation>
                         Add

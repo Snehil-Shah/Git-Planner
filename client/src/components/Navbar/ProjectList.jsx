@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteMenu from './deleteProject';
 
-export default function ProjectList({ project, projectList, setProjects, setProject }) {
+export default function ProjectList({ setDeleteAlert,setSuccessAlert, project, projectList, setProjects, setProject }) {
     const [selectedIndex, setSelectedIndex] = React.useState(null);
     const [projectContextMenu, setProjectContext] = React.useState(null);
     React.useEffect(() => {
@@ -66,16 +66,16 @@ export default function ProjectList({ project, projectList, setProjects, setProj
 
     return (
         <>
-            <Button variant="contained" disableElevation style={{
-                position: "relative", margin: "5%", backgroundColor:'#1f883d'
-            }} onClick={handleFormOpen}>
+            <Button variant="contained" disableElevation color='success' style={{
+                position: "relative", margin: "5%"
+            }} sx={{backgroundColor:'#1f883d', '&:hover':{backgroundColor:'success'}}} onClick={handleFormOpen}>
                 <AddIcon />Project
             </Button>
-            <CreateProjectForm projectList={projectList} refreshProjectList={setProjects} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
+            <CreateProjectForm setSuccessAlert={setSuccessAlert} projectList={projectList} refreshProjectList={setProjects} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
             <List component="nav" aria-label="main mailbox folders">
                 {htmlList}
             </List>
-            <DeleteMenu setProject={setProject} project={project} projectToDelete={projectContextMenu} menuPosition={menuPosition} setMenuPosition={setMenuPosition} refreshProjectList={setProjects}/>
+            <DeleteMenu setDeleteAlert={setDeleteAlert} setProject={setProject} project={project} projectToDelete={projectContextMenu} menuPosition={menuPosition} setMenuPosition={setMenuPosition} refreshProjectList={setProjects}/>
         </>
     );
 }

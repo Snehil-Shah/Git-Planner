@@ -10,7 +10,7 @@ import { Menu, MenuItem, Typography } from '@mui/material';
 import { deleteProject } from '../../services/projects';
 
 
-export default function DeleteMenu({setProject,project, projectToDelete, menuPosition, setMenuPosition, refreshProjectList}) {
+export default function DeleteMenu({setDeleteAlert, setProject,project, projectToDelete, menuPosition, setMenuPosition, refreshProjectList}) {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -53,6 +53,7 @@ export default function DeleteMenu({setProject,project, projectToDelete, menuPos
                         if(project && projectToDelete.projectName == project.projectName) setProject(null);
                         handleClose()
                         await deleteProject(projectToDelete.id);
+                        setDeleteAlert(true);
                     }} variant='contained' color='error' disableElevation>
                         Delete
                     </Button>

@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
-import { TextField, IconButton } from '@mui/material';
+import { TextField, IconButton, CircularProgress } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { FixedSizeList } from 'react-window';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -15,23 +15,24 @@ import ListItem from '@mui/material/ListItem';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { getReposList, getProjects, createProject } from '../../services/projects';
 
-async function githubList(){
+async function githubList() {
     const repoList = await getReposList();
     const projectList = await getProjects();
     const projectNames = projectList.map(project => project.projectName);
-    return repoList.map((gitProject)=>({
+    return repoList.map((gitProject) => ({
         name: gitProject.name,
         link: gitProject.repoLink,
         alreadyCreated: projectNames.includes(gitProject.name)
     }))
 }
 
-export default function CreateProjectForm({setProject, refreshProjectList, formOpen, handleFormClose, projectList }) {
+export default function CreateProjectForm({ setSuccessAlert, setProject, refreshProjectList, formOpen, handleFormClose, projectList }) {
     const [projectName, setProjectName] = useState('');
     const [githubProjects, setGithubList] = useState([]);
+    const [creatingProject, startCreatingProj] = useState(false);
 
     useEffect(() => {
-        githubList().then((list)=> {setGithubList(list);});
+        githubList().then((list) => { setGithubList(list); });
     }, [projectList])
 
     function renderRow(props) {
@@ -39,14 +40,15 @@ export default function CreateProjectForm({setProject, refreshProjectList, formO
         return (
             <ListItem style={style} key={index} component="div" disablePadding>
                 <ListItemButton onClick={!(githubProjects[index].alreadyCreated) ? async () => {
-                    const newProject =  await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
-                    refreshProjectList(prevList=>[...prevList, newProject])
+                    const newProject = await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
+                    refreshProjectList(prevList => [...prevList, newProject])
                     setProject(newProject)
                     handleFormClose();
+                    setSuccessAlert(true);
                 } : null} disabled={githubProjects[index].alreadyCreated}>
                     <GitHubIcon style={{ marginLeft: 1.5, marginRight: 10 }} />
                     <ListItemText style={{ marginLeft: 2, paddingRight: 25 }} primary={githubProjects[index].name} />
-                    {!githubProjects[index].alreadyCreated ? <AddIcon sx={{ position: 'absolute', right: 12, color:'#1f883d' }} /> : null}
+                    {!githubProjects[index].alreadyCreated ? <AddIcon sx={{ position: 'absolute', right: 12, color: '#1f883d' }} /> : null}
                 </ListItemButton>
             </ListItem>
         );
@@ -79,22 +81,26 @@ export default function CreateProjectForm({setProject, refreshProjectList, formO
                         onChange={(evt) => { setProjectName(evt.target.value) }}
                     />
                 </DialogContent>
-                <Box sx={{ mx: 3 }}>
-                    <Button onClick={async () => {
-                        // TODO: Add backdrop here
-                        const newProject =  await createProject(projectName, 'user');
-                        refreshProjectList(prevList=>[...prevList, newProject])
-                        setProject(newProject)
-                        handleFormClose();
-                    }
-                    } variant='contained' color='success' fullWidth disableElevation sx={{ mb: 2, backgroundColor:'#1f883d' }}>
-                        Create
-                    </Button>
+                <Box sx={{ mx: 3, textAlign: 'center' }}>
+                    {creatingProject ?
+                        <CircularProgress sx={{ mb: 1, color: 'text.secondary' }} disableShrink size={25} /> :
+                        <Button onClick={async () => {
+                            startCreatingProj(true);
+                            const newProject = await createProject(projectName, 'user');
+                            refreshProjectList(prevList => [...prevList, newProject])
+                            setProject(newProject)
+                            handleFormClose();
+                            setSuccessAlert(true);
+                            startCreatingProj(false);
+                        }
+                        } variant='contained' color='success' fullWidth disableElevation sx={{ mb: 2, backgroundColor: '#1f883d' }}>
+                            Create
+                        </Button>}
                 </Box>
                 <Divider variant='middle' />
                 <Box sx={{ mt: 2, mx: 2 }}>
                     <FixedSizeList
-                        height={Math.min(githubProjects.length * 50,300)}
+                        height={Math.min(githubProjects.length * 50, 300)}
                         itemSize={46}
                         itemCount={githubProjects.length}
                         overscanCount={5}

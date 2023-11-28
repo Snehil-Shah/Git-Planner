@@ -12,7 +12,7 @@ import { logout } from "../../services/users";
 import { createProject } from "../../services/projects";
 //TODO: Organize imports
 
-export default function Homepage({ githubProjects, setProject, logoutCallback, credentials, refreshProjectList, openDrawer, projectList }) {
+export default function Homepage({ setSuccessAlert, githubProjects, setProject, logoutCallback, credentials, refreshProjectList, openDrawer, projectList }) {
     const [formOpen, setForm] = useState(false);
     const handleFormOpen = () => {
         setForm(true);
@@ -35,6 +35,7 @@ export default function Homepage({ githubProjects, setProject, logoutCallback, c
                     const newProject = await createProject(githubProjects[index].name, 'github', githubProjects[index].link);
                     refreshProjectList(prevList => [...prevList, newProject])
                     setProject(newProject)
+                    setSuccessAlert(true);
                 }} disabled={githubProjects[index].alreadyCreated} color='success'>
                     <AddIcon sx={!githubProjects[index].alreadyCreated ? {color:'#1f883d'} : null}/>
                 </IconButton>
@@ -61,7 +62,7 @@ export default function Homepage({ githubProjects, setProject, logoutCallback, c
                                         <Link href={'#'} onClick={handleFormOpen} color='text.primary'>
                                             <Typography variant='button' fontSize={17}>New Project</Typography>
                                         </Link>
-                                        <CreateProjectForm projectList={projectList} refreshProjectList={refreshProjectList} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
+                                        <CreateProjectForm setSuccessAlert={setSuccessAlert} projectList={projectList} refreshProjectList={refreshProjectList} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <OpenInNewIcon fontSize="small" sx={{ mr: 1 }} />
@@ -104,7 +105,7 @@ export default function Homepage({ githubProjects, setProject, logoutCallback, c
                                                 overscanCount={5}
                                             > {renderRow}
                                             </FixedSizeList> :
-                                            <CircularProgress sx={{ my: 13.7, color: 'text.secondary' }} disableShrink size={25} />}
+                                            <CircularProgress sx={{ mt: 12.8, mb:14.6, color: 'text.secondary' }} disableShrink size={25} />}
                                     </Box>
                                 </CardContent>
                             </Card>

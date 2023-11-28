@@ -3,12 +3,14 @@ export async function createTask(projectId, taskName, taskDescription, linkedIss
   if (linkedIssue) {
     body.linkedIssue = linkedIssue;
   }
-  await fetch('http://localhost:3000/tasks', {
+  const res = await fetch('http://localhost:3000/tasks', {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   })
+  const newTask = await res.json();
+  return newTask
 }
 
 export async function getTasks(projectId) {
