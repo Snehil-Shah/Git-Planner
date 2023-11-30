@@ -145,7 +145,7 @@ export default function Navbar({ setLogoutAlert, manageAuth, credentials }) {
         <DrawerHeader />
         {project ?
           <Tasklist project={project} /> :
-          <Homepage setSuccessAlert={setSuccessAlert} githubProjects={githubProjects} projectList={projectList} credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth} setProject={LoadData} />
+          <Homepage setLogoutAlert={setLogoutAlert} setSuccessAlert={setSuccessAlert} githubProjects={githubProjects} projectList={projectList} credentials={credentials} refreshProjectList={setProjects} openDrawer={handleDrawerOpen} logoutCallback={manageAuth} setProject={LoadData} />
         }
       </Main>
     </Box>

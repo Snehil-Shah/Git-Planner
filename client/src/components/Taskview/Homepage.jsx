@@ -12,7 +12,11 @@ import { logout } from "../../services/users";
 import { createProject } from "../../services/projects";
 //TODO: Organize imports
 
-export default function Homepage({ setSuccessAlert, githubProjects, setProject, logoutCallback, credentials, refreshProjectList, openDrawer, projectList }) {
+function openGithub(link){
+    window.open(link);
+}
+
+export default function Homepage({ setLogoutAlert, setSuccessAlert, githubProjects, setProject, logoutCallback, credentials, refreshProjectList, openDrawer, projectList }) {
     const [formOpen, setForm] = useState(false);
     const handleFormOpen = () => {
         setForm(true);
@@ -37,7 +41,7 @@ export default function Homepage({ setSuccessAlert, githubProjects, setProject, 
                     setProject(newProject)
                     setSuccessAlert(true);
                 }} disabled={githubProjects[index].alreadyCreated} color='success'>
-                    <AddIcon sx={!githubProjects[index].alreadyCreated ? {color:'#1f883d'} : null}/>
+                    <AddIcon sx={!githubProjects[index].alreadyCreated ? { color: '#1f883d' } : null} />
                 </IconButton>
             </ListItem>
         );
@@ -59,28 +63,30 @@ export default function Homepage({ setSuccessAlert, githubProjects, setProject, 
                                     <Divider sx={{ my: 3, mb: 5 }} />
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <PlaylistAddIcon sx={{ mr: 1 }} />
-                                        <Link href={'#'} onClick={handleFormOpen} color='text.primary'>
+                                        <Link href={'projects/new'} onClick={(e) => { e.preventDefault(); handleFormOpen() }} color='text.primary'>
                                             <Typography variant='button' fontSize={17}>New Project</Typography>
                                         </Link>
                                         <CreateProjectForm setSuccessAlert={setSuccessAlert} projectList={projectList} refreshProjectList={refreshProjectList} formOpen={formOpen} handleFormClose={handleFormClose} setProject={setProject} />
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <OpenInNewIcon fontSize="small" sx={{ mr: 1 }} />
-                                        <Link href={'#'} color='text.primary' onClick={openDrawer}>
+                                        <Link href={'/projects'} color='text.primary' onClick={(e) => { e.preventDefault(); openDrawer() }}>
                                             <Typography variant='button' fontSize={17}>Open Projects</Typography>
                                         </Link>
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <GitHubIcon fontSize='small' sx={{ mr: 1 }} />
-                                        <Link href={credentials.link} color='text.primary' onClick={() => { window.open(credentials.link) }} >
+                                        <Link href={credentials.link} color='text.primary' onClick={(e) => {e.preventDefault(); openGithub(credentials.link) }} >
                                             <Typography variant='button' fontSize={17}>My Github</Typography>
                                         </Link>
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                         <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
-                                        <Link href={'/logout'} color='text.primary' onClick={async () => {
+                                        <Link href={'/logout'} color='text.primary' onClick={async (evt) => {
+                                            evt.preventDefault()
                                             await logout()
                                             logoutCallback(null)
+                                            setLogoutAlert(true);
                                         }
                                         }>
                                             <Typography variant='button' fontSize={17}>Logout</Typography>
@@ -105,7 +111,7 @@ export default function Homepage({ setSuccessAlert, githubProjects, setProject, 
                                                 overscanCount={5}
                                             > {renderRow}
                                             </FixedSizeList> :
-                                            <CircularProgress sx={{ mt: 12.8, mb:14.6, color: 'text.secondary' }} disableShrink size={25} />}
+                                            <CircularProgress sx={{ mt: 12.8, mb: 14.6, color: 'text.secondary' }} disableShrink size={25} />}
                                     </Box>
                                 </CardContent>
                             </Card>

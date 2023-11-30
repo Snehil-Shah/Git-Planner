@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const taskController = require('../controllers/tasks');
+const {exceptionHandler: asyncHandler} = require('../middleware')
 
 router.route('/')
-    .post(taskController.createTask)
+    .post(asyncHandler(taskController.createTask))
 router.route('/:taskId')
-    .delete(taskController.deleteTask)
-    .patch(taskController.editTask)
+    .delete(asyncHandler(taskController.deleteTask))
+    .patch(asyncHandler(taskController.editTask))
 
 module.exports = router;

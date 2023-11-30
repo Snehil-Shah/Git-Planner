@@ -58,7 +58,6 @@ export default function TaskList({ project }) {
         id="panel1a-header"
       >
         <FormControlLabel control={<Checkbox color='primary' checked={task.completed || false} onChange={async (evt)=>{
-          // TODO: Add exception handling for all async operations and maybe manage an error state to show user error messages
           setTasks(prevList=>(prevList.map(t=> t._id == task._id ? {...t,completed: evt.target.checked} : t)));
           await editTask(task._id, {completed: evt.target.checked});
         }}/>}

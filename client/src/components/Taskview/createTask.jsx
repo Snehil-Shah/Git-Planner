@@ -32,7 +32,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
         })
     }
     }, [formOpen, project])
-    // TODO: Form Validations
+
     return (
         <>
             <Fab size='large' aria-label="add" style={{ position: "fixed", right: "40px", bottom: "50px", backgroundColor:'#24292f', color:'#ffffff' }} onClick={handleFormOpen}>
@@ -50,6 +50,7 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         type="text"
                         fullWidth
                         variant='standard'
+                        required
                         onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, task: evt.target.value })) }}
                     />
                     <TextField
@@ -85,7 +86,8 @@ export default function CreateTaskForm({ project, refreshTaskList }) {
                         const newTask = await createTask(project.id, formContent.task, formContent.description, formContent.githubIssue);
                         refreshTaskList(prevList=>prevList.map(t=>t.name == newTask.name && t.description == newTask.description ? {...t,...newTask} : t))
                     }
-                    } sx={{backgroundColor:'#1f883d'}} color='success' variant='contained' disableElevation>
+                    } sx={{backgroundColor:'#1f883d'}} color='success' variant='contained' disableElevation
+                    disabled={!formContent || !formContent.task}>
                         Add
                     </Button>
                 </DialogActions>

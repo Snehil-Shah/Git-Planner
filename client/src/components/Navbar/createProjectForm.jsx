@@ -93,7 +93,8 @@ export default function CreateProjectForm({ setSuccessAlert, setProject, refresh
                             setSuccessAlert(true);
                             startCreatingProj(false);
                         }
-                        } variant='contained' color='success' fullWidth disableElevation sx={{ mb: 2, backgroundColor: '#1f883d' }}>
+                        } variant='contained' color='success' fullWidth disableElevation sx={{ mb: 2, backgroundColor: '#1f883d' }}
+                        disabled={!projectName}>
                             Create
                         </Button>}
                 </Box>

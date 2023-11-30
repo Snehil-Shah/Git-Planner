@@ -6,8 +6,6 @@ import MuiAlert from '@mui/material/Alert'
 import CheckIcon from '@mui/icons-material/Check'
 import { fetchCredentials } from "./services/users";
 
-// FIXME: Make client side authentication checks more robust
-
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} {...props} />;
 });

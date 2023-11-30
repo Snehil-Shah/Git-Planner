@@ -47,6 +47,7 @@ export default function EditTaskForm({setSuccessAlert, project,task, refreshTask
                         fullWidth
                         variant='standard'
                         defaultValue={task.task}
+                        required
                         onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, task: evt.target.value })) }}
                     />
                     <TextField
@@ -84,7 +85,8 @@ export default function EditTaskForm({setSuccessAlert, project,task, refreshTask
                         await editTask(task['_id'], formContent);
                         setSuccessAlert(true);
                     }
-                    } sx={{backgroundColor:'#1f883d'}} color="success" variant='contained'>
+                    } sx={{backgroundColor:'#1f883d'}} color="success" variant='contained'
+                    disabled={!formContent || !formContent.name}>
                         Save
                     </Button>
                 </DialogActions>
