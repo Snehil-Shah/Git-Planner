@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Menu, MenuItem, Typography } from '@mui/material';
-import { deleteProject } from '../../services/projects';
+import { deleteProject } from '../../../services/projects';
 
 
 export default function DeleteMenu({setDeleteAlert, setProject,project, projectToDelete, menuPosition, setMenuPosition, refreshProjectList}) {

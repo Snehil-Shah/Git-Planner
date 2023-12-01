@@ -6,8 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete'
-import { deleteTask } from '../../services/tasks';
-
+import { deleteTask } from '../../../services/tasks';
 
 export default function DeleteTaskForm({setDeleteAlert, project, task, refreshTaskList}) {
     const [open, setOpen] = useState(false);

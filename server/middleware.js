@@ -6,7 +6,6 @@ module.exports.isAuthenticated = function(req,res,next){
 }
 
 module.exports.handleBadRequests = function (err,req,res,next){
-    console.log('ml')
     console.error(err.stack);
     res.status(500).send('Something broke!');
 }

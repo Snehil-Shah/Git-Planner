@@ -2,13 +2,13 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import CreateProjectForm from './createProjectForm';
+import CreateProjectForm from './Project/createProjectForm';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { getProjects } from '../../services/projects';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteMenu from './deleteProject';
+import DeleteMenu from './Project/deleteProject';
 
 export default function ProjectList({ setDeleteAlert,setSuccessAlert, project, projectList, setProjects, setProject }) {
     const [selectedIndex, setSelectedIndex] = React.useState(null);

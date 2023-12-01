@@ -6,13 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Button from '@mui/material/Button';
-import {  editTask, getIssuesList } from '../../services/tasks';
-import EditIcon from '@mui/icons-material/Edit';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import { createTask, getIssuesList } from '../../../services/tasks';
 
-export default function EditTaskForm({setSuccessAlert, project,task, refreshTaskList }) {
+export default function CreateTaskForm({ project, refreshTaskList }) {
 
     const [formOpen, setForm] = useState(false);
-    const [formContent, setFormContent] = useState({name: task.task, description: task.description, githubIssue: task.githubIssue});
+    const [formContent, setFormContent] = useState();
     const [issues, setIssueList] = useState([])
     const handleFormOpen = () => {
         setForm(true);
@@ -22,21 +23,24 @@ export default function EditTaskForm({setSuccessAlert, project,task, refreshTask
     };
 
     useEffect(() => {
+        if(project){
         getIssuesList(project.projectName).then((list) => {
             if (list) {
                 const issueList =  list.map((issue) => ({name: `#${issue.id}: ${issue.name}`, link: issue.link}))
                 setIssueList(issueList);
             }
         })
-    }, [formOpen, project.projectName])
+    }
+    }, [formOpen, project])
 
     return (
         <>
-            <Button variant="outlined" size='small' color={task.completed? 'info':'primary'} sx={{mr: 1, py: 0.75}} onClick={async () => {
-              handleFormOpen()
-            }}>{<EditIcon fontSize='small' />}</Button>
+            <Fab size='large' aria-label="add" style={{ position: "fixed", right: "40px", bottom: "50px", backgroundColor:'#24292f', color:'#ffffff' }} onClick={handleFormOpen}>
+                <AddIcon />
+            </Fab>
+
             <Dialog open={formOpen} onClose={handleFormClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth={true}>
-                <DialogTitle id="form-dialog-title">Edit Todo</DialogTitle>
+                <DialogTitle id="form-dialog-title">Add Todo</DialogTitle>
                 <DialogContent sx={{ px: 4 }}>
                     <TextField
                         autoFocus
@@ -46,7 +50,6 @@ export default function EditTaskForm({setSuccessAlert, project,task, refreshTask
                         type="text"
                         fullWidth
                         variant='standard'
-                        defaultValue={task.task}
                         required
                         onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, task: evt.target.value })) }}
                     />
@@ -60,15 +63,13 @@ export default function EditTaskForm({setSuccessAlert, project,task, refreshTask
                         sx={{ mt: 3 }}
                         variant='outlined'
                         margin='normal'
-                        defaultValue={task.description}
                         onChange={(evt) => { setFormContent(prevContent => ({ ...prevContent, description: evt.target.value })) }}
                     />
                     {(issues.length !== 0 && project.provider == 'github') ? <Autocomplete
                         id="issue-selector"
                         options={issues}
                         fullWidth
-                        defaultValue={task.githubIssue}
-                        isOptionEqualToValue={(option, value) => option.name === value.name && option.link === value.link}
+                        defaultValue={null}
                         sx={{ my: 2 }}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) => <TextField {...params} label="Link an Issue" />}
@@ -80,14 +81,14 @@ export default function EditTaskForm({setSuccessAlert, project,task, refreshTask
                         Cancel
                     </Button>
                     <Button onClick={async () => {
-                        refreshTaskList(prevTasks=>prevTasks.map(t=>t._id == task._id? {...t,...formContent} : t));
+                        refreshTaskList(prevList=> [...prevList, formContent])
                         setForm(false);
-                        await editTask(task['_id'], formContent);
-                        setSuccessAlert(true);
+                        const newTask = await createTask(project.id, formContent.task, formContent.description, formContent.githubIssue);
+                        refreshTaskList(prevList=>prevList.map(t=>t.name == newTask.name && t.description == newTask.description ? {...t,...newTask} : t))
                     }
-                    } sx={{backgroundColor:'#1f883d'}} color="success" variant='contained'
-                    disabled={!formContent || !formContent.name}>
-                        Save
+                    } sx={{backgroundColor:'#1f883d'}} color='success' variant='contained' disableElevation
+                    disabled={!formContent || !formContent.task}>
+                        Add
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -7,10 +7,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { FixedSizeList } from 'react-window';
 import CircularProgress from "@mui/material/CircularProgress";
 import AddIcon from '@mui/icons-material/Add'
-import CreateProjectForm from '../Navbar/createProjectForm';
+import CreateProjectForm from '../Nav/Project/createProjectForm';
 import { logout } from "../../services/users";
 import { createProject } from "../../services/projects";
-//TODO: Organize imports
 
 function openGithub(link){
     window.open(link);

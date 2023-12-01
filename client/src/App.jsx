@@ -1,14 +1,11 @@
-import { useState, useEffect, forwardRef } from 'react'
-import Navbar from './components/Navbar/Navbar'
+import { useState, useEffect} from 'react'
+import AppAccess from './components/AppAccess'
 import Login from './components/Login'
 import Snackbar from '@mui/material/Snackbar'
-import MuiAlert from '@mui/material/Alert'
 import CheckIcon from '@mui/icons-material/Check'
 import { fetchCredentials } from "./services/users";
-
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} {...props} />;
-});
+import useAlert from './hooks/Alert'
+import Alert from './components/utils/Alert'
 
 function App() {
   const [credentials, setAuthentication] = useState();
@@ -17,14 +14,7 @@ function App() {
   },[]);
 
   // Logout Alert
-  const [logoutAlert, setLogoutAlert] = useState(false);
-
-  const handleLogoutClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setLogoutAlert(false);
-  };
+  const [logoutAlert, setLogoutAlert, handleLogoutClose] = useAlert(false);
 
   return (
     <>
@@ -33,7 +23,7 @@ function App() {
             Logged Out Successfully!
           </Alert>
         </Snackbar>
-      {credentials ? <Navbar setLogoutAlert={setLogoutAlert} manageAuth ={setAuthentication} credentials={credentials}/> : <Login/>}
+      {credentials ? <AppAccess setLogoutAlert={setLogoutAlert} manageAuth ={setAuthentication} credentials={credentials}/> : <Login/>}
     </>
   )
 }

@@ -13,18 +13,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import { getReposList, getProjects, createProject } from '../../services/projects';
-
-async function githubList() {
-    const repoList = await getReposList();
-    const projectList = await getProjects();
-    const projectNames = projectList.map(project => project.projectName);
-    return repoList.map((gitProject) => ({
-        name: gitProject.name,
-        link: gitProject.repoLink,
-        alreadyCreated: projectNames.includes(gitProject.name)
-    }))
-}
+import { getGithubProjects, createProject } from '../../../services/projects';
 
 export default function CreateProjectForm({ setSuccessAlert, setProject, refreshProjectList, formOpen, handleFormClose, projectList }) {
     const [projectName, setProjectName] = useState('');
@@ -32,7 +21,7 @@ export default function CreateProjectForm({ setSuccessAlert, setProject, refresh
     const [creatingProject, startCreatingProj] = useState(false);
 
     useEffect(() => {
-        githubList().then((list) => { setGithubList(list); });
+        getGithubProjects().then((list) => { setGithubList(list); });
     }, [projectList])
 
     function renderRow(props) {
