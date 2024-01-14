@@ -18,6 +18,12 @@
 
 <h3>• In Action</h3>
 
+- **Login & Logout using OAuth**: Login using your Github Account!
+
+<img src="./.assets/Auth.gif">
+
+<img src="./.assets/logout.gif">
+
 - **Projects**
   
 <img src="./.assets/project_types.png">
@@ -47,11 +53,5 @@ Create & Link Tasks to Issues in your Github Repository!
 Delete & Edit Tasks as you want!
 
 <img src="./.assets/edit_delete_tasks.gif">
-
-- **Login & Logout using OAuth**: Login using your Github Account!
-
-<img src="./.assets/Auth.gif">
-
-<img src="./.assets/logout.gif">
 
 
