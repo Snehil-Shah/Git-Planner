@@ -37,7 +37,7 @@ function Login() {
             </Typography>
           </Box>
           <Box display='flex' justifyContent="center" alignItems='center' paddingY={1}>
-            {!loading ? <Button variant="contained" href='http://localhost:3000/user/login/github'
+            {!loading ? <Button variant="contained" href={`${import.meta.env.VITE_SERVER_URL}/user/login/github`}
               sx={{ backgroundColor: '#24292f', '&:hover': { backgroundColor: '#000000' } }} size='large'
               onClick={() => setLoading(true)}>
               Sign in with Github <GitHubIcon style={{ marginLeft: 8 }} />

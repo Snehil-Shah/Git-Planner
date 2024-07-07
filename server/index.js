@@ -11,9 +11,9 @@ const session = require('express-session')
 const { handleBadRequests, isAuthenticated } = require('./middleware');
 
 const app = express();
-app.use(cors({origin: 'http://localhost:5173', credentials: true}));
+app.use(cors({origin: process.env.CLIENT_URL, credentials: true}));
 
-mongoose.connect('mongodb://127.0.0.1:27017/Git-Planner');
+mongoose.connect(process.env.MONGO_URL);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));
@@ -26,7 +26,7 @@ app.use(session({
 
 app.use(passport.session())
 app.get('/',(_req,res)=>{
-  res.status(303).redirect('http://localhost:5173')
+  res.status(303).redirect(process.env.CLIENT_URL)
 })
 app.use('/user', userRoutes)
 app.use('/projects',isAuthenticated, projectRoutes)
@@ -35,7 +35,7 @@ app.use('/github',isAuthenticated, githubRoutes)
 
 app.use(handleBadRequests);
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(process.env.PORT || 3000, () => {
+    console.log('Server is running');
 });
 

@@ -5,7 +5,7 @@ const {exceptionHandler: asyncHandler} = require('../middleware')
 
 router.get('/login/github', asyncHandler(passport.authenticate('github', { scope: ['user:email', 'repo'] })))
 router.get('/login/github/callback', asyncHandler(passport.authenticate('github', { failureRedirect: '/login' })), asyncHandler((req, res) => {
-    res.redirect('http://localhost:3000')
+    res.redirect(process.env.SERVER_URL)
 }
 ))
 router.post('/logout', asyncHandler((req, res, next) => {

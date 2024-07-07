@@ -10,7 +10,7 @@ import Alert from './components/utils/Alert'
 function App() {
   const [credentials, setAuthentication] = useState();
   useEffect(function(){
-    fetchCredentials().then((User)=>setAuthentication(User));
+    fetchCredentials().then((User)=>{console.log(User);setAuthentication(User)});
   },[]);
 
   // Logout Alert

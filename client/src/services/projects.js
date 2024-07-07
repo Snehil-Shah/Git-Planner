@@ -3,7 +3,7 @@ export async function createProject(projectName, provider, repoLink) {
     if (repoLink) {
         body.repoLink = repoLink;
     }
-    const response = await fetch('http://localhost:3000/projects', {
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/projects`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -14,17 +14,17 @@ export async function createProject(projectName, provider, repoLink) {
 }
 
 export async function getProjects() {
-    const response = await fetch('http://localhost:3000/projects', { credentials: 'include' });
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/projects`, { credentials: 'include' });
     const projectList = await response.json();
     return projectList;   // {id, projectName, provider, repoLink}
 }
 
 export async function deleteProject(projectId) {
-    await fetch(`http://localhost:3000/projects/${projectId}`, { method: 'DELETE', credentials: 'include' });
+    await fetch(`${import.meta.env.VITE_SERVER_URL}/projects/${projectId}`, { method: 'DELETE', credentials: 'include' });
 }
 
 export async function getReposList() {
-    const response = await fetch('http://localhost:3000/github/repos', { credentials: 'include' });
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/github/repos`, { credentials: 'include' });
     const repoList = await response.json();
     return repoList.map((repo) => ({ name: repo.name, repoLink: repo.html_url }));
 }

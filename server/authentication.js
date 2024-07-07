@@ -6,7 +6,7 @@ const User = require('./models/user')
 passport.use(new githubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3000/user/login/github/callback',
+    callbackURL: `${process.env.SERVER_URL}/user/login/github/callback`,
     scope: ['user:email','repo']
 },
     function (accessToken, refreshToken, profile, done) {

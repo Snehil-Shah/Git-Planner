@@ -3,7 +3,7 @@ export async function createTask(projectId, taskName, taskDescription, linkedIss
   if (linkedIssue) {
     body.linkedIssue = linkedIssue;
   }
-  const res = await fetch('http://localhost:3000/tasks', {
+  const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/tasks`, {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -15,7 +15,7 @@ export async function createTask(projectId, taskName, taskDescription, linkedIss
 
 export async function getTasks(projectId) {
   if (projectId != null) {
-    const response = await fetch(`http://localhost:3000/projects/${projectId}`, { credentials: 'include' });
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/projects/${projectId}`, { credentials: 'include' });
     const projectTasks = await response.json();
     return projectTasks;
   }
@@ -23,7 +23,7 @@ export async function getTasks(projectId) {
 }
 
 export async function deleteTask(projectId, taskId) {
-  await fetch(`http://localhost:3000/tasks/${taskId}`, {
+  await fetch(`${import.meta.env.VITE_SERVER_URL}/tasks/${taskId}`, {
     method: 'DELETE',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -35,7 +35,7 @@ export async function deleteTask(projectId, taskId) {
 
 export async function editTask(taskId, editDetails){
   const body = editDetails;
-  await fetch(`http://localhost:3000/tasks/${taskId}`,{
+  await fetch(`${import.meta.env.VITE_SERVER_URL}/tasks/${taskId}`,{
     method: 'PATCH',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
@@ -45,7 +45,7 @@ export async function editTask(taskId, editDetails){
 
 export async function getIssuesList(repoName) {
   if (repoName != null) {
-    const response = await fetch(`http://localhost:3000/github/${repoName}/issues`, { credentials: 'include' });
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/github/${repoName}/issues`, { credentials: 'include' });
     const issueList = await response.json();
     return (issueList.length || issueList.message != 'Not Found' ? issueList.map((issue) => ({ id: issue.number, name: issue.title, link: issue.html_url })) : []);
   }
